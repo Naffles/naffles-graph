@@ -1,0 +1,18 @@
+{
+  "name": "l2paidticketdiamond",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ l2paidticketdiamond",
+    "create-local": "graph create --node http://localhost:8020/ l2paidticketdiamond",
+    "remove-local": "graph remove --node http://localhost:8020/ l2paidticketdiamond",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 l2paidticketdiamond",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.53.0",
+    "@graphprotocol/graph-ts": "0.30.0"
+  },
+  "devDependencies": { "matchstick-as": "0.5.0" }
+}
