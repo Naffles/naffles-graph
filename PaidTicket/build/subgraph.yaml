@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: L2PaidTicketDiamond
@@ -22,7 +22,7 @@ dataSources:
         - OpenEntryTicket
       abis:
         - name: L2PaidTicketDiamond
-          file: ./abis/L2PaidTicketDiamond.json
+          file: L2PaidTicketDiamond/abis/L2PaidTicketDiamond.json
       eventHandlers:
         - event: PaidTicketsMinted(indexed address,uint256[],indexed uint256,uint256,uint256)
           handler: handlePaidTicketsMinted
@@ -30,4 +30,4 @@ dataSources:
           handler: handlePaidTicketsRefundedAndBurned
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/l-2-paid-ticket-diamond.ts
+      file: L2PaidTicketDiamond/L2PaidTicketDiamond.wasm

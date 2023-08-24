@@ -4,59 +4,69 @@ import {
   test,
   clearStore,
   beforeAll,
-  afterAll
-} from "matchstick-as/assembly/index"
-import { Address, Bytes } from "@graphprotocol/graph-ts"
-import { DiamondCut } from "../generated/schema"
-import { DiamondCut as DiamondCutEvent } from "../generated/L2OpenEntryTicketDiamond/L2OpenEntryTicketDiamond"
-import { handleDiamondCut } from "../src/l-2-open-entry-ticket-diamond"
-import { createDiamondCutEvent } from "./l-2-open-entry-ticket-diamond-utils"
-
-// Tests structure (matchstick-as >=0.5.0)
-// https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
-
-describe("Describe entity assertions", () => {
-  beforeAll(() => {
-    let facetCuts = ["ethereum.Tuple Not implemented"]
-    let target = Address.fromString(
-      "0x0000000000000000000000000000000000000001"
-    )
-    let data = Bytes.fromI32(1234567890)
-    let newDiamondCutEvent = createDiamondCutEvent(facetCuts, target, data)
-    handleDiamondCut(newDiamondCutEvent)
-  })
-
+  afterAll,
+} from "matchstick-as/assembly/index";
+import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
+import { logStore } from "matchstick-as/assembly/index";
+import { OpenEntryTicket } from "../generated/schema";
+import {
+  createTicketsAttachedToNaffleEvent,
+  createTicketsDetachedFromNaffleEvent,
+} from "./l-2-open-entry-ticket-diamond-utils";
+import {
+  handleTicketsAttachedToNaffle,
+  handleTicketsDetachedFromNaffle,
+} from "../src/l-2-open-entry-ticket-diamond";
+describe("Describe Open Entry Ticket", () => {
   afterAll(() => {
-    clearStore()
-  })
+    clearStore();
+  });
 
-  // For more test scenarios, see:
-  // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
+  test("should ticket attached to naffle", () => {
+    let newEntryTicketEvent = createTicketsAttachedToNaffleEvent(
+      BigInt.fromI32(1),
+      [BigInt.fromI32(1), BigInt.fromI32(2), BigInt.fromI32(3)],
+      BigInt.fromI32(1),
+      Address.fromString("0x82ba3449F70D0BA6D51dCCAd45d0f1a55B5C587A")
+    );
 
-  test("DiamondCut created and stored", () => {
-    assert.entityCount("DiamondCut", 1)
+    handleTicketsAttachedToNaffle(newEntryTicketEvent);
+    logStore();
 
-    // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
+    assert.fieldEquals("OpenEntryTicket", "0x01000000", "naffleId", "1");
     assert.fieldEquals(
-      "DiamondCut",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "facetCuts",
-      "[ethereum.Tuple Not implemented]"
-    )
-    assert.fieldEquals(
-      "DiamondCut",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "target",
-      "0x0000000000000000000000000000000000000001"
-    )
-    assert.fieldEquals(
-      "DiamondCut",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "data",
-      "1234567890"
-    )
+      "OpenEntryTicket",
+      "0x01000000",
+      "ticketIdOnContract",
+      "1"
+    );
 
-    // More assert options:
-    // https://thegraph.com/docs/en/developer/matchstick/#asserts
-  })
-})
+    clearStore();
+  });
+
+  test("should ticket detached from naffle", () => {
+    let newEntryTicketEvent = createTicketsAttachedToNaffleEvent(
+      BigInt.fromI32(1),
+      [BigInt.fromI32(1), BigInt.fromI32(2), BigInt.fromI32(3)],
+      BigInt.fromI32(1),
+      Address.fromString("0x82ba3449F70D0BA6D51dCCAd45d0f1a55B5C587A")
+    );
+
+    handleTicketsAttachedToNaffle(newEntryTicketEvent);
+    logStore();
+
+    let detachTicketEvent = createTicketsDetachedFromNaffleEvent(
+      BigInt.fromI32(1),
+      [BigInt.fromI32(1), BigInt.fromI32(2), BigInt.fromI32(3)],
+      [BigInt.fromI32(1), BigInt.fromI32(2), BigInt.fromI32(3)]
+    );
+    handleTicketsDetachedFromNaffle(detachTicketEvent);
+
+    assert.fieldEquals(
+      "OpenEntryTicket",
+      "0x01000000",
+      "ticketIdOnNaffle",
+      "[1, 2, 3]"
+    );
+  });
+});

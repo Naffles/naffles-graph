@@ -126,6 +126,70 @@ export class OwnershipTransferred__Params {
   }
 }
 
+export class PaidTicketsMinted extends ethereum.Event {
+  get params(): PaidTicketsMinted__Params {
+    return new PaidTicketsMinted__Params(this);
+  }
+}
+
+export class PaidTicketsMinted__Params {
+  _event: PaidTicketsMinted;
+
+  constructor(event: PaidTicketsMinted) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get ticketIds(): Array<BigInt> {
+    return this._event.parameters[1].value.toBigIntArray();
+  }
+
+  get naffleId(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get ticketPriceInWei(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get startingTicketId(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+}
+
+export class PaidTicketsRefundedAndBurned extends ethereum.Event {
+  get params(): PaidTicketsRefundedAndBurned__Params {
+    return new PaidTicketsRefundedAndBurned__Params(this);
+  }
+}
+
+export class PaidTicketsRefundedAndBurned__Params {
+  _event: PaidTicketsRefundedAndBurned;
+
+  constructor(event: PaidTicketsRefundedAndBurned) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get naffleId(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get ticketIds(): Array<BigInt> {
+    return this._event.parameters[2].value.toBigIntArray();
+  }
+
+  get ticketIdsOnNaffle(): Array<BigInt> {
+    return this._event.parameters[3].value.toBigIntArray();
+  }
+}
+
 export class RoleAdminChanged extends ethereum.Event {
   get params(): RoleAdminChanged__Params {
     return new RoleAdminChanged__Params(this);
@@ -204,62 +268,6 @@ export class RoleRevoked__Params {
   }
 }
 
-export class TicketsAttachedToNaffle extends ethereum.Event {
-  get params(): TicketsAttachedToNaffle__Params {
-    return new TicketsAttachedToNaffle__Params(this);
-  }
-}
-
-export class TicketsAttachedToNaffle__Params {
-  _event: TicketsAttachedToNaffle;
-
-  constructor(event: TicketsAttachedToNaffle) {
-    this._event = event;
-  }
-
-  get naffleId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get ticketIds(): Array<BigInt> {
-    return this._event.parameters[1].value.toBigIntArray();
-  }
-
-  get startingTicketId(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get owner(): Address {
-    return this._event.parameters[3].value.toAddress();
-  }
-}
-
-export class TicketsDetachedFromNaffle extends ethereum.Event {
-  get params(): TicketsDetachedFromNaffle__Params {
-    return new TicketsDetachedFromNaffle__Params(this);
-  }
-}
-
-export class TicketsDetachedFromNaffle__Params {
-  _event: TicketsDetachedFromNaffle;
-
-  constructor(event: TicketsDetachedFromNaffle) {
-    this._event = event;
-  }
-
-  get naffleId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get ticketIds(): Array<BigInt> {
-    return this._event.parameters[1].value.toBigIntArray();
-  }
-
-  get ticketIdsOnNaffle(): Array<BigInt> {
-    return this._event.parameters[2].value.toBigIntArray();
-  }
-}
-
 export class Transfer extends ethereum.Event {
   get params(): Transfer__Params {
     return new Transfer__Params(this);
@@ -286,7 +294,7 @@ export class Transfer__Params {
   }
 }
 
-export class L2OpenEntryTicketDiamond__facetsResultDiamondFacetsStruct extends ethereum.Tuple {
+export class L2PaidTicketDiamond__facetsResultDiamondFacetsStruct extends ethereum.Tuple {
   get target(): Address {
     return this[0].toAddress();
   }
@@ -296,9 +304,9 @@ export class L2OpenEntryTicketDiamond__facetsResultDiamondFacetsStruct extends e
   }
 }
 
-export class L2OpenEntryTicketDiamond extends ethereum.SmartContract {
-  static bind(address: Address): L2OpenEntryTicketDiamond {
-    return new L2OpenEntryTicketDiamond("L2OpenEntryTicketDiamond", address);
+export class L2PaidTicketDiamond extends ethereum.SmartContract {
+  static bind(address: Address): L2PaidTicketDiamond {
+    return new L2PaidTicketDiamond("L2PaidTicketDiamond", address);
   }
 
   facetAddress(selector: Bytes): Address {
@@ -370,16 +378,16 @@ export class L2OpenEntryTicketDiamond extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBytesArray());
   }
 
-  facets(): Array<L2OpenEntryTicketDiamond__facetsResultDiamondFacetsStruct> {
+  facets(): Array<L2PaidTicketDiamond__facetsResultDiamondFacetsStruct> {
     let result = super.call("facets", "facets():((address,bytes4[])[])", []);
 
     return result[0].toTupleArray<
-      L2OpenEntryTicketDiamond__facetsResultDiamondFacetsStruct
+      L2PaidTicketDiamond__facetsResultDiamondFacetsStruct
     >();
   }
 
   try_facets(): ethereum.CallResult<
-    Array<L2OpenEntryTicketDiamond__facetsResultDiamondFacetsStruct>
+    Array<L2PaidTicketDiamond__facetsResultDiamondFacetsStruct>
   > {
     let result = super.tryCall("facets", "facets():((address,bytes4[])[])", []);
     if (result.reverted) {
@@ -388,7 +396,7 @@ export class L2OpenEntryTicketDiamond extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(
       value[0].toTupleArray<
-        L2OpenEntryTicketDiamond__facetsResultDiamondFacetsStruct
+        L2PaidTicketDiamond__facetsResultDiamondFacetsStruct
       >()
     );
   }

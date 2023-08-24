@@ -5,13 +5,13 @@ import {
   ApprovalForAll,
   DiamondCut,
   OwnershipTransferred,
+  PaidTicketsMinted,
+  PaidTicketsRefundedAndBurned,
   RoleAdminChanged,
   RoleGranted,
   RoleRevoked,
-  TicketsAttachedToNaffle,
-  TicketsDetachedFromNaffle,
   Transfer
-} from "../generated/L2OpenEntryTicketDiamond/L2OpenEntryTicketDiamond"
+} from "../generated/L2PaidTicketDiamond/L2PaidTicketDiamond"
 
 export function createApprovalEvent(
   owner: Address,
@@ -108,6 +108,85 @@ export function createOwnershipTransferredEvent(
   return ownershipTransferredEvent
 }
 
+export function createPaidTicketsMintedEvent(
+  owner: Address,
+  ticketIds: Array<BigInt>,
+  naffleId: BigInt,
+  ticketPriceInWei: BigInt,
+  startingTicketId: BigInt
+): PaidTicketsMinted {
+  let paidTicketsMintedEvent = changetype<PaidTicketsMinted>(newMockEvent())
+
+  paidTicketsMintedEvent.parameters = new Array()
+
+  paidTicketsMintedEvent.parameters.push(
+    new ethereum.EventParam("owner", ethereum.Value.fromAddress(owner))
+  )
+  paidTicketsMintedEvent.parameters.push(
+    new ethereum.EventParam(
+      "ticketIds",
+      ethereum.Value.fromUnsignedBigIntArray(ticketIds)
+    )
+  )
+  paidTicketsMintedEvent.parameters.push(
+    new ethereum.EventParam(
+      "naffleId",
+      ethereum.Value.fromUnsignedBigInt(naffleId)
+    )
+  )
+  paidTicketsMintedEvent.parameters.push(
+    new ethereum.EventParam(
+      "ticketPriceInWei",
+      ethereum.Value.fromUnsignedBigInt(ticketPriceInWei)
+    )
+  )
+  paidTicketsMintedEvent.parameters.push(
+    new ethereum.EventParam(
+      "startingTicketId",
+      ethereum.Value.fromUnsignedBigInt(startingTicketId)
+    )
+  )
+
+  return paidTicketsMintedEvent
+}
+
+export function createPaidTicketsRefundedAndBurnedEvent(
+  owner: Address,
+  naffleId: BigInt,
+  ticketIds: Array<BigInt>,
+  ticketIdsOnNaffle: Array<BigInt>
+): PaidTicketsRefundedAndBurned {
+  let paidTicketsRefundedAndBurnedEvent = changetype<
+    PaidTicketsRefundedAndBurned
+  >(newMockEvent())
+
+  paidTicketsRefundedAndBurnedEvent.parameters = new Array()
+
+  paidTicketsRefundedAndBurnedEvent.parameters.push(
+    new ethereum.EventParam("owner", ethereum.Value.fromAddress(owner))
+  )
+  paidTicketsRefundedAndBurnedEvent.parameters.push(
+    new ethereum.EventParam(
+      "naffleId",
+      ethereum.Value.fromUnsignedBigInt(naffleId)
+    )
+  )
+  paidTicketsRefundedAndBurnedEvent.parameters.push(
+    new ethereum.EventParam(
+      "ticketIds",
+      ethereum.Value.fromUnsignedBigIntArray(ticketIds)
+    )
+  )
+  paidTicketsRefundedAndBurnedEvent.parameters.push(
+    new ethereum.EventParam(
+      "ticketIdsOnNaffle",
+      ethereum.Value.fromUnsignedBigIntArray(ticketIdsOnNaffle)
+    )
+  )
+
+  return paidTicketsRefundedAndBurnedEvent
+}
+
 export function createRoleAdminChangedEvent(
   role: Bytes,
   previousAdminRole: Bytes,
@@ -178,76 +257,6 @@ export function createRoleRevokedEvent(
   )
 
   return roleRevokedEvent
-}
-
-export function createTicketsAttachedToNaffleEvent(
-  naffleId: BigInt,
-  ticketIds: Array<BigInt>,
-  startingTicketId: BigInt,
-  owner: Address
-): TicketsAttachedToNaffle {
-  let ticketsAttachedToNaffleEvent = changetype<TicketsAttachedToNaffle>(
-    newMockEvent()
-  )
-
-  ticketsAttachedToNaffleEvent.parameters = new Array()
-
-  ticketsAttachedToNaffleEvent.parameters.push(
-    new ethereum.EventParam(
-      "naffleId",
-      ethereum.Value.fromUnsignedBigInt(naffleId)
-    )
-  )
-  ticketsAttachedToNaffleEvent.parameters.push(
-    new ethereum.EventParam(
-      "ticketIds",
-      ethereum.Value.fromUnsignedBigIntArray(ticketIds)
-    )
-  )
-  ticketsAttachedToNaffleEvent.parameters.push(
-    new ethereum.EventParam(
-      "startingTicketId",
-      ethereum.Value.fromUnsignedBigInt(startingTicketId)
-    )
-  )
-  ticketsAttachedToNaffleEvent.parameters.push(
-    new ethereum.EventParam("owner", ethereum.Value.fromAddress(owner))
-  )
-
-  return ticketsAttachedToNaffleEvent
-}
-
-export function createTicketsDetachedFromNaffleEvent(
-  naffleId: BigInt,
-  ticketIds: Array<BigInt>,
-  ticketIdsOnNaffle: Array<BigInt>
-): TicketsDetachedFromNaffle {
-  let ticketsDetachedFromNaffleEvent = changetype<TicketsDetachedFromNaffle>(
-    newMockEvent()
-  )
-
-  ticketsDetachedFromNaffleEvent.parameters = new Array()
-
-  ticketsDetachedFromNaffleEvent.parameters.push(
-    new ethereum.EventParam(
-      "naffleId",
-      ethereum.Value.fromUnsignedBigInt(naffleId)
-    )
-  )
-  ticketsDetachedFromNaffleEvent.parameters.push(
-    new ethereum.EventParam(
-      "ticketIds",
-      ethereum.Value.fromUnsignedBigIntArray(ticketIds)
-    )
-  )
-  ticketsDetachedFromNaffleEvent.parameters.push(
-    new ethereum.EventParam(
-      "ticketIdsOnNaffle",
-      ethereum.Value.fromUnsignedBigIntArray(ticketIdsOnNaffle)
-    )
-  )
-
-  return ticketsDetachedFromNaffleEvent
 }
 
 export function createTransferEvent(

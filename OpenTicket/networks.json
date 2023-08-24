@@ -1,8 +1,8 @@
 {
   "zksync-era": {
     "L2OpenEntryTicketDiamond": {
-      "address": "0xc820234371Fd826b214EbdB2F6972Ac426Cd6AFc",
-      "startBlock": 10454040
+      "address": "0xBbB04F8e844E244b0a81F3fEc15CaC3cC68aB704",
+      "startBlock": 10823279
     }
   }
 }

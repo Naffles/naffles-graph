@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: L2OpenEntryTicketDiamond
@@ -22,10 +22,10 @@ dataSources:
         - OpenEntryTicket
       abis:
         - name: L2OpenEntryTicketDiamond
-          file: ./abis/L2OpenEntryTicketDiamond.json
+          file: L2OpenEntryTicketDiamond/abis/L2OpenEntryTicketDiamond.json
       eventHandlers:
         - event: TicketsAttachedToNaffle(indexed uint256,uint256[],uint256,indexed address)
           handler: handleTicketsAttachedToNaffle
         - event: TicketsDetachedFromNaffle(indexed uint256,uint256[],uint256[])
           handler: handleTicketsDetachedFromNaffle
-      file: ./src/l-2-open-entry-ticket-diamond.ts
+      file: L2OpenEntryTicketDiamond/L2OpenEntryTicketDiamond.wasm
