@@ -1,0 +1,105 @@
+type L2NaffleCancelled @entity(immutable: true) {
+  id: Bytes!
+  naffleId: BigInt! # uint256
+  messageHash: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type L2NaffleCreated @entity(immutable: true) {
+  id: Bytes!
+  naffleId: BigInt! # uint256
+  owner: Bytes! # address
+  ethTokenAddress: Bytes! # address
+  nftId: BigInt! # uint256
+  paidTicketSpots: BigInt! # uint256
+  openEntryTicketSpots: BigInt! # uint256
+  ticketPriceInWei: BigInt! # uint256
+  endTime: BigInt! # uint256
+  naffleType: Int! # uint8
+  tokenContractType: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type L2NaffleFinished @entity(immutable: true) {
+  id: Bytes!
+  naffleId: BigInt! # uint256
+  winner: Bytes! # address
+  winningTicketIdOnNaffle: BigInt! # uint256
+  messageHash: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type L2NafflePostponed @entity(immutable: true) {
+  id: Bytes!
+  naffleId: BigInt! # uint256
+  newEndTime: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OpenEntryTicketsUsed @entity(immutable: true) {
+  id: Bytes!
+  naffleId: BigInt! # uint256
+  owner: Bytes! # address
+  ticketIds: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RoleAdminChanged @entity(immutable: true) {
+  id: Bytes!
+  role: Bytes! # bytes32
+  previousAdminRole: Bytes! # bytes32
+  newAdminRole: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RoleGranted @entity(immutable: true) {
+  id: Bytes!
+  role: Bytes! # bytes32
+  account: Bytes! # address
+  sender: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RoleRevoked @entity(immutable: true) {
+  id: Bytes!
+  role: Bytes! # bytes32
+  account: Bytes! # address
+  sender: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TicketsBought @entity(immutable: true) {
+  id: Bytes!
+  naffleId: BigInt! # uint256
+  buyer: Bytes! # address
+  ticketIds: [BigInt!]! # uint256[]
+  ticketPriceInWei: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
