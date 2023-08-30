@@ -1,0 +1,42 @@
+enum L1NaffleStatus {
+  ACTIVE
+  CLOSED
+  FINISHED
+}
+type L1Naffle @entity {
+  id: Bytes!
+  collection: Collection
+  owner: L1User
+  winningTicketId: BigInt
+  naffleIdOnContract: BigInt!
+  nftId: BigInt!
+  maxTickets: BigInt
+  ticketPriceInWei: BigInt!
+  endDate: BigInt!
+  canceledOnL1: Boolean
+  canceledOnL1MessageHash: String
+  winnerAddress: Bytes
+  naffleStatus: L1NaffleStatus
+  blockTimestamp: BigInt
+  transactionHash: Bytes
+  winningNumber: BigInt
+  blockNumber: BigInt
+  requestId: BigInt
+  randomNumberGenerated: Boolean
+  type: Int
+}
+type Collection @entity {
+  id: Bytes!
+  address: Bytes!
+  naffles: [L1Naffle!]! @derivedFrom(field: "collection")
+  blockTimestamp: BigInt
+  transactionHash: Bytes
+}
+
+type L1User @entity {
+  id: Bytes!
+  address: Bytes!
+  naffles: [L1Naffle!]! @derivedFrom(field: "owner")
+  blockTimestamp: BigInt
+  transactionHash: Bytes
+}

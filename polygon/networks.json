@@ -1,0 +1,8 @@
+{
+  "goerli": {
+    "NaffleVRF": {
+      "address": "0x50616111B78D002e4FcDaD3d40d2B96760f28755",
+      "startBlock": 9527732
+    }
+  }
+}
