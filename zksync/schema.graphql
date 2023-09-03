@@ -16,7 +16,8 @@ type L2User @entity {
   id: Bytes!
   address: Bytes!
   naffles: [L2Naffle!]! @derivedFrom(field: "owner")
-  blockTimestamp: BigInt
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
   transactionHash: Bytes
 }
 
@@ -24,7 +25,8 @@ type Collection @entity {
   id: Bytes!
   address: Bytes!
   naffles: [L2Naffle!]! @derivedFrom(field: "collection")
-  blockTimestamp: BigInt
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
   transactionHash: Bytes
 }
 
@@ -46,7 +48,8 @@ type L2Naffle @entity {
   winnerAddress: Bytes
   naffleStatus: L2NaffleStatus
   randomNumberGenerated: Boolean
-  blockTimestamp: BigInt
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
   transactionHash: Bytes
   type: Int
 }
@@ -58,7 +61,8 @@ type TicketActivity @entity {
   naffle: L2Naffle
   owner: L2User!
   type: TicketActivityType!
-  timestamp: Int!
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
 }
 
 type PaidTicket @entity {
@@ -68,7 +72,8 @@ type PaidTicket @entity {
   ticketIdOnContract: BigInt
   ticketIdOnNaffle: [BigInt!]
   activities: [TicketActivity!]! @derivedFrom(field: "paidTicket")
-  blockTimestamp: BigInt
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
   transactionHash: Bytes
 }
 
@@ -80,6 +85,7 @@ type OpenEntryTicket @entity {
   ticketIdOnNaffle: [BigInt!]
   activities: [TicketActivity!]! @derivedFrom(field: "openEntryTicket")
   naffle: L2Naffle
-  blockTimestamp: BigInt
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
   transactionHash: Bytes
 }

@@ -17,7 +17,6 @@ import {
   handleL1NaffleCancelled,
   handleL1NaffleCreated,
   handleL1NaffleWinnerSet,
-  handleChainlinkRequestFulfilled,
 } from "../src/l-1-naffle-diamond";
 import { logStore } from "matchstick-as/assembly/store";
 
@@ -132,40 +131,5 @@ describe("L1Naffle", () => {
     assert.fieldEquals("L1Naffle", "0x01000000", "naffleStatus", "FINISHED");
 
     clearStore();
-  });
-
-  test("ChainlinkRequestFulfilled created and stored", () => {
-    clearStore();
-
-    let newNaffleEvent = createL1NaffleCreatedEvent(
-      BigInt.fromI32(1),
-      Address.fromString("0x82ba3449F70D0BA6D51dCCAd45d0f1a55B5C587A"),
-      Address.fromString("0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7"),
-      BigInt.fromI32(2),
-      BigInt.fromI32(3),
-      BigInt.fromI32(4),
-      BigInt.fromI32(5),
-      6,
-      7
-    );
-
-    handleL1NaffleCreated(newNaffleEvent);
-
-    let naffleId = BigInt.fromI32(1);
-    let requestId = BigInt.fromI32(12);
-    let winningNumber = BigInt.fromI32(23);
-    let newChainlinkRequestFulfilledEvent = createChainlinkRequestFulfilledEvent(
-      requestId,
-      naffleId,
-      winningNumber
-    );
-    handleChainlinkRequestFulfilled(newChainlinkRequestFulfilledEvent);
-
-    logStore();
-
-    assert.entityCount("L1Naffle", 1);
-
-    assert.fieldEquals("L1Naffle", "0x01000000", "requestId", "12");
-    assert.fieldEquals("L1Naffle", "0x01000000", "winningNumber", "23");
   });
 });

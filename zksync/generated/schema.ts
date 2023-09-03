@@ -75,8 +75,8 @@ export class L2User extends Entity {
     );
   }
 
-  get blockTimestamp(): BigInt | null {
-    let value = this.get("blockTimestamp");
+  get timestampLastUpdate(): BigInt | null {
+    let value = this.get("timestampLastUpdate");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -84,11 +84,28 @@ export class L2User extends Entity {
     }
   }
 
-  set blockTimestamp(value: BigInt | null) {
+  set timestampLastUpdate(value: BigInt | null) {
     if (!value) {
-      this.unset("blockTimestamp");
+      this.unset("timestampLastUpdate");
     } else {
-      this.set("blockTimestamp", Value.fromBigInt(<BigInt>value));
+      this.set("timestampLastUpdate", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get blocknumberLastUpdate(): BigInt | null {
+    let value = this.get("blocknumberLastUpdate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blocknumberLastUpdate(value: BigInt | null) {
+    if (!value) {
+      this.unset("blocknumberLastUpdate");
+    } else {
+      this.set("blocknumberLastUpdate", Value.fromBigInt(<BigInt>value));
     }
   }
 
@@ -176,8 +193,8 @@ export class Collection extends Entity {
     );
   }
 
-  get blockTimestamp(): BigInt | null {
-    let value = this.get("blockTimestamp");
+  get timestampLastUpdate(): BigInt | null {
+    let value = this.get("timestampLastUpdate");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -185,11 +202,28 @@ export class Collection extends Entity {
     }
   }
 
-  set blockTimestamp(value: BigInt | null) {
+  set timestampLastUpdate(value: BigInt | null) {
     if (!value) {
-      this.unset("blockTimestamp");
+      this.unset("timestampLastUpdate");
     } else {
-      this.set("blockTimestamp", Value.fromBigInt(<BigInt>value));
+      this.set("timestampLastUpdate", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get blocknumberLastUpdate(): BigInt | null {
+    let value = this.get("blocknumberLastUpdate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blocknumberLastUpdate(value: BigInt | null) {
+    if (!value) {
+      this.unset("blocknumberLastUpdate");
+    } else {
+      this.set("blocknumberLastUpdate", Value.fromBigInt(<BigInt>value));
     }
   }
 
@@ -516,8 +550,8 @@ export class L2Naffle extends Entity {
     this.set("randomNumberGenerated", Value.fromBoolean(value));
   }
 
-  get blockTimestamp(): BigInt | null {
-    let value = this.get("blockTimestamp");
+  get timestampLastUpdate(): BigInt | null {
+    let value = this.get("timestampLastUpdate");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -525,11 +559,28 @@ export class L2Naffle extends Entity {
     }
   }
 
-  set blockTimestamp(value: BigInt | null) {
+  set timestampLastUpdate(value: BigInt | null) {
     if (!value) {
-      this.unset("blockTimestamp");
+      this.unset("timestampLastUpdate");
     } else {
-      this.set("blockTimestamp", Value.fromBigInt(<BigInt>value));
+      this.set("timestampLastUpdate", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get blocknumberLastUpdate(): BigInt | null {
+    let value = this.get("blocknumberLastUpdate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blocknumberLastUpdate(value: BigInt | null) {
+    if (!value) {
+      this.unset("blocknumberLastUpdate");
+    } else {
+      this.set("blocknumberLastUpdate", Value.fromBigInt(<BigInt>value));
     }
   }
 
@@ -684,17 +735,38 @@ export class TicketActivity extends Entity {
     this.set("type", Value.fromString(value));
   }
 
-  get timestamp(): i32 {
-    let value = this.get("timestamp");
+  get timestampLastUpdate(): BigInt | null {
+    let value = this.get("timestampLastUpdate");
     if (!value || value.kind == ValueKind.NULL) {
-      return 0;
+      return null;
     } else {
-      return value.toI32();
+      return value.toBigInt();
     }
   }
 
-  set timestamp(value: i32) {
-    this.set("timestamp", Value.fromI32(value));
+  set timestampLastUpdate(value: BigInt | null) {
+    if (!value) {
+      this.unset("timestampLastUpdate");
+    } else {
+      this.set("timestampLastUpdate", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get blocknumberLastUpdate(): BigInt | null {
+    let value = this.get("blocknumberLastUpdate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blocknumberLastUpdate(value: BigInt | null) {
+    if (!value) {
+      this.unset("blocknumberLastUpdate");
+    } else {
+      this.set("blocknumberLastUpdate", Value.fromBigInt(<BigInt>value));
+    }
   }
 }
 
@@ -819,8 +891,8 @@ export class PaidTicket extends Entity {
     );
   }
 
-  get blockTimestamp(): BigInt | null {
-    let value = this.get("blockTimestamp");
+  get timestampLastUpdate(): BigInt | null {
+    let value = this.get("timestampLastUpdate");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -828,11 +900,28 @@ export class PaidTicket extends Entity {
     }
   }
 
-  set blockTimestamp(value: BigInt | null) {
+  set timestampLastUpdate(value: BigInt | null) {
     if (!value) {
-      this.unset("blockTimestamp");
+      this.unset("timestampLastUpdate");
     } else {
-      this.set("blockTimestamp", Value.fromBigInt(<BigInt>value));
+      this.set("timestampLastUpdate", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get blocknumberLastUpdate(): BigInt | null {
+    let value = this.get("blocknumberLastUpdate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blocknumberLastUpdate(value: BigInt | null) {
+    if (!value) {
+      this.unset("blocknumberLastUpdate");
+    } else {
+      this.set("blocknumberLastUpdate", Value.fromBigInt(<BigInt>value));
     }
   }
 
@@ -992,8 +1081,8 @@ export class OpenEntryTicket extends Entity {
     }
   }
 
-  get blockTimestamp(): BigInt | null {
-    let value = this.get("blockTimestamp");
+  get timestampLastUpdate(): BigInt | null {
+    let value = this.get("timestampLastUpdate");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1001,11 +1090,28 @@ export class OpenEntryTicket extends Entity {
     }
   }
 
-  set blockTimestamp(value: BigInt | null) {
+  set timestampLastUpdate(value: BigInt | null) {
     if (!value) {
-      this.unset("blockTimestamp");
+      this.unset("timestampLastUpdate");
     } else {
-      this.set("blockTimestamp", Value.fromBigInt(<BigInt>value));
+      this.set("timestampLastUpdate", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get blocknumberLastUpdate(): BigInt | null {
+    let value = this.get("blocknumberLastUpdate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blocknumberLastUpdate(value: BigInt | null) {
+    if (!value) {
+      this.unset("blocknumberLastUpdate");
+    } else {
+      this.set("blocknumberLastUpdate", Value.fromBigInt(<BigInt>value));
     }
   }
 

@@ -7,7 +7,7 @@ import {
 } from "matchstick-as/assembly/index";
 import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
 
-import { L2Naffle, PaidTicket, L2User, Collection } from "../generated/schema";
+import { L2Naffle } from "../generated/schema";
 
 import { logStore } from "matchstick-as/assembly/store";
 import {

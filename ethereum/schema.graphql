@@ -17,19 +17,19 @@ type L1Naffle @entity {
   canceledOnL1MessageHash: String
   winnerAddress: Bytes
   naffleStatus: L1NaffleStatus
-  blockTimestamp: BigInt
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
   transactionHash: Bytes
   winningNumber: BigInt
-  blockNumber: BigInt
   requestId: BigInt
-  randomNumberGenerated: Boolean
   type: Int
 }
 type Collection @entity {
   id: Bytes!
   address: Bytes!
   naffles: [L1Naffle!]! @derivedFrom(field: "collection")
-  blockTimestamp: BigInt
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
   transactionHash: Bytes
 }
 
@@ -37,6 +37,7 @@ type L1User @entity {
   id: Bytes!
   address: Bytes!
   naffles: [L1Naffle!]! @derivedFrom(field: "owner")
-  blockTimestamp: BigInt
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
   transactionHash: Bytes
 }
