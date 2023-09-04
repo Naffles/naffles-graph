@@ -228,6 +228,24 @@ export class OwnershipTransferred__Params {
   }
 }
 
+export class RandomNumberRequested extends ethereum.Event {
+  get params(): RandomNumberRequested__Params {
+    return new RandomNumberRequested__Params(this);
+  }
+}
+
+export class RandomNumberRequested__Params {
+  _event: RandomNumberRequested;
+
+  constructor(event: RandomNumberRequested) {
+    this._event = event;
+  }
+
+  get naffleId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
 export class RoleAdminChanged extends ethereum.Event {
   get params(): RoleAdminChanged__Params {
     return new RoleAdminChanged__Params(this);
