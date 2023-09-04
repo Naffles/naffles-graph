@@ -1,0 +1,17 @@
+type ChainlinkRequestFulfilled @entity(immutable: true) {
+  id: Bytes!
+  requestId: BigInt! # uint256
+  naffleId: BigInt! # uint256
+  winningNumber: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NaffleWinnerRolled @entity(immutable: true) {
+  id: Bytes!
+  naffleId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

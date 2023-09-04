@@ -1,0 +1,206 @@
+import {
+  L2NaffleCancelled as L2NaffleCancelledEvent,
+  L2NaffleCreated as L2NaffleCreatedEvent,
+  L2NaffleFinished as L2NaffleFinishedEvent,
+  L2NafflePostponed as L2NafflePostponedEvent,
+  OpenEntryTicketsUsed as OpenEntryTicketsUsedEvent,
+  TicketsBought as TicketsBoughtEvent,
+} from "../generated/L2NaffleDiamond/L2NaffleDiamond";
+import {
+  PaidTicketsMinted as PaidTicketsMintedEvent,
+  PaidTicketsRefundedAndBurned as PaidTicketsRefundedAndBurnedEvent,
+  Transfer as TransferEvent,
+} from "../generated/L2PaidTicketDiamond/L2PaidTicketDiamond";
+import {
+  TicketsAttachedToNaffle as TicketsAttachedToNaffleEvent,
+  TicketsDetachedFromNaffle as TicketsDetachedFromNaffleEvent,
+} from "../generated/L2OpenEntryTicketDiamond/L2OpenEntryTicketDiamond";
+import {
+  L2Naffle,
+  L2User,
+  Collection,
+  PaidTicket,
+  OpenEntryTicket,
+} from "../generated/schema";
+import { Bytes } from "@graphprotocol/graph-ts";
+
+export function handleL2NaffleCancelled(event: L2NaffleCancelledEvent): void {
+  let entity = L2Naffle.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+  if (entity != null) {
+    entity.canceledOnL1MessageHash = event.params.messageHash;
+    entity.canceledOnL2TransactionHash = event.transaction.hash;
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.transactionHash = event.transaction.hash;
+    entity.save();
+  }
+}
+
+export function handleL2NaffleCreated(event: L2NaffleCreatedEvent): void {
+  let entity = new L2Naffle(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+
+  entity.naffleIdOnContract = event.params.naffleId;
+  entity.nftId = event.params.nftId;
+  entity.maxTickets = event.params.paidTicketSpots;
+  entity.ticketPriceInWei = event.params.ticketPriceInWei;
+  entity.endDate = event.params.endTime;
+  entity.timestampLastUpdate = event.block.timestamp;
+  entity.blocknumberLastUpdate = event.block.number;
+  entity.transactionHash = event.transaction.hash;
+
+  let userEntity = L2User.load(event.params.owner);
+  if (userEntity == null) {
+    userEntity = new L2User(event.params.owner);
+    userEntity.address = event.params.owner;
+    userEntity.timestampLastUpdate = event.block.timestamp;
+    userEntity.blocknumberLastUpdate = event.block.number;
+    userEntity.transactionHash = event.transaction.hash;
+    userEntity.save();
+  }
+  entity.owner = userEntity.id;
+
+  let collectionEntity = Collection.load(event.params.owner);
+  if (collectionEntity == null) {
+    collectionEntity = new Collection(event.params.owner);
+    collectionEntity.address = event.params.owner;
+    collectionEntity.timestampLastUpdate = event.block.timestamp;
+    collectionEntity.blocknumberLastUpdate = event.block.number;
+    collectionEntity.transactionHash = event.transaction.hash;
+    collectionEntity.save();
+  }
+  entity.collection = collectionEntity.id;
+
+  entity.save();
+}
+
+export function handleL2NaffleFinished(event: L2NaffleFinishedEvent): void {
+  let entity = L2Naffle.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+  if (entity != null) {
+    entity.winnerAddress = event.params.winner;
+    entity.winnerSetOnL1MessageHash = event.params.messageHash;
+    entity.winnerSetOnL2TransactionHash = event.transaction.hash;
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.transactionHash = event.transaction.hash;
+    entity.save();
+  }
+}
+
+export function handleL2NafflePostponed(event: L2NafflePostponedEvent): void {
+  let entity = L2Naffle.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+  if (entity != null) {
+    entity.endDate = event.params.newEndTime;
+    entity.naffleStatus = "POSTPONED";
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.transactionHash = event.transaction.hash;
+    entity.save();
+  }
+}
+
+export function handleOpenEntryTicketsUsed(
+  event: OpenEntryTicketsUsedEvent
+): void {
+  let entity = L2Naffle.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+  if (entity != null) {
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.transactionHash = event.transaction.hash;
+    entity.save();
+  }
+}
+
+export function handleTicketsBought(event: TicketsBoughtEvent): void {
+  let entity = L2Naffle.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+  if (entity != null) {
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.transactionHash = event.transaction.hash;
+    entity.save();
+  }
+}
+
+export function handleTicketsAttachedToNaffle(
+  event: TicketsAttachedToNaffleEvent
+): void {
+  let entity = new OpenEntryTicket(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+  entity.naffleId = event.params.naffleId;
+  entity.owner = event.params.owner;
+  entity.timestampLastUpdate = event.block.timestamp;
+  entity.blocknumberLastUpdate = event.block.number;
+  entity.transactionHash = event.transaction.hash;
+  entity.ticketIdOnContract = event.params.startingTicketId;
+  entity.save();
+}
+
+export function handleTicketsDetachedFromNaffle(
+  event: TicketsDetachedFromNaffleEvent
+): void {
+  let entity = OpenEntryTicket.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+
+  if (entity != null) {
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.transactionHash = event.transaction.hash;
+    entity.ticketIdOnNaffle = event.params.ticketIdsOnNaffle;
+    entity.save();
+  }
+}
+
+export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
+  let entity = new PaidTicket(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+  entity.owner = event.params.owner;
+  entity.timestampLastUpdate = event.block.timestamp;
+  entity.blocknumberLastUpdate = event.block.number;
+  entity.transactionHash = event.transaction.hash;
+  entity.ticketIdOnContract = event.params.startingTicketId;
+  entity.save();
+}
+
+export function handlePaidTicketsRefundedAndBurned(
+  event: PaidTicketsRefundedAndBurnedEvent
+): void {
+  let entity = PaidTicket.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+
+  if (entity != null) {
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.transactionHash = event.transaction.hash;
+    entity.ticketIdOnNaffle = event.params.ticketIdsOnNaffle;
+    entity.save();
+  }
+}
+
+export function handleTransfer(event: TransferEvent): void {
+  let entity = PaidTicket.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.tokenId))
+  );
+
+  if (entity != null) {
+    entity.ticketIdOnContract = event.params.tokenId;
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.transactionHash = event.transaction.hash;
+    entity.save();
+  }
+}
