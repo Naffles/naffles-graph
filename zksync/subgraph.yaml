@@ -37,7 +37,7 @@ dataSources:
         - event: TicketsBought(indexed uint256,indexed address,uint256[],uint256)
           handler: handleTicketsBought
         - event: RandomNumberRequested(indexed uint256)
-          handler: handleRandomNumberGenerated
+          handler: handleRandomNumberRequested
       file: ./src/l-2-naffle-diamond.ts
   - kind: ethereum
     name: L2OpenEntryTicketDiamond

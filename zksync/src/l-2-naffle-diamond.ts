@@ -133,7 +133,7 @@ export function handleTicketsBought(event: TicketsBoughtEvent): void {
   }
 }
 
-export function handleRandomNumberGenerated(
+export function handleRandomNumberRequested(
   event: RandomNumberRequestedEvent
 ): void {
   let entity = L2Naffle.load(
