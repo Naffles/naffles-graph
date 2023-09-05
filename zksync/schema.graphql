@@ -47,7 +47,7 @@ type L2Naffle @entity {
   winnerSetOnL2TransactionHash: Bytes
   winnerAddress: Bytes
   naffleStatus: L2NaffleStatus
-  randomNumberGenerated: Boolean
+  randomNumberRequested: Boolean
   timestampLastUpdate: BigInt
   blocknumberLastUpdate: BigInt
   transactionHash: Bytes

@@ -133,7 +133,7 @@ export function handleTicketsBought(event: TicketsBoughtEvent): void {
   }
 }
 
-export function handleRandomNumberGenerated(
+export function handleRandomNumberRequested(
   event: RandomNumberRequestedEvent
 ): void {
   let entity = L2Naffle.load(
@@ -143,7 +143,7 @@ export function handleRandomNumberGenerated(
   if (entity != null) {
     entity.timestampLastUpdate = event.block.timestamp;
     entity.blocknumberLastUpdate = event.block.number;
-    entity.randomNumberGenerated = true;
+    entity.randomNumberRequested = true;
     entity.save();
   }
 }
