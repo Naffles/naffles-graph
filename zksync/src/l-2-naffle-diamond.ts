@@ -4,6 +4,7 @@ import {
   L2NaffleFinished as L2NaffleFinishedEvent,
   L2NafflePostponed as L2NafflePostponedEvent,
   OpenEntryTicketsUsed as OpenEntryTicketsUsedEvent,
+  RandomNumberRequested as RandomNumberRequestedEvent,
   TicketsBought as TicketsBoughtEvent,
 } from "../generated/L2NaffleDiamond/L2NaffleDiamond";
 import {
@@ -128,6 +129,21 @@ export function handleTicketsBought(event: TicketsBoughtEvent): void {
     entity.timestampLastUpdate = event.block.timestamp;
     entity.blocknumberLastUpdate = event.block.number;
     entity.transactionHash = event.transaction.hash;
+    entity.save();
+  }
+}
+
+export function handleRandomNumberGenerated(
+  event: RandomNumberRequestedEvent
+): void {
+  let entity = L2Naffle.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+  );
+
+  if (entity != null) {
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.randomNumberGenerated = true;
     entity.save();
   }
 }
