@@ -537,8 +537,8 @@ export class L2Naffle extends Entity {
     }
   }
 
-  get randomNumberGenerated(): boolean {
-    let value = this.get("randomNumberGenerated");
+  get randomNumberRequested(): boolean {
+    let value = this.get("randomNumberRequested");
     if (!value || value.kind == ValueKind.NULL) {
       return false;
     } else {
@@ -546,8 +546,8 @@ export class L2Naffle extends Entity {
     }
   }
 
-  set randomNumberGenerated(value: boolean) {
-    this.set("randomNumberGenerated", Value.fromBoolean(value));
+  set randomNumberRequested(value: boolean) {
+    this.set("randomNumberRequested", Value.fromBoolean(value));
   }
 
   get timestampLastUpdate(): BigInt | null {
