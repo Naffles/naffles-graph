@@ -52,6 +52,8 @@ export function handleL2NaffleCreated(event: L2NaffleCreatedEvent): void {
   entity.timestampLastUpdate = event.block.timestamp;
   entity.blocknumberLastUpdate = event.block.number;
   entity.transactionHash = event.transaction.hash;
+  entity.naffleStatus = "ACTIVE";
+  entity.type = event.params.naffleType
 
   let userEntity = L2User.load(event.params.owner);
   if (userEntity == null) {

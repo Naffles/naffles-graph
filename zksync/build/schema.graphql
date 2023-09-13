@@ -1,105 +1,91 @@
-type L2NaffleCancelled @entity(immutable: true) {
-  id: Bytes!
-  naffleId: BigInt! # uint256
-  messageHash: Bytes! # bytes32
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+enum L2NaffleStatus {
+  ACTIVE
+  CLOSED
+  POSTPONED
+  FINISHED
 }
 
-type L2NaffleCreated @entity(immutable: true) {
-  id: Bytes!
-  naffleId: BigInt! # uint256
-  owner: Bytes! # address
-  ethTokenAddress: Bytes! # address
-  nftId: BigInt! # uint256
-  paidTicketSpots: BigInt! # uint256
-  openEntryTicketSpots: BigInt! # uint256
-  ticketPriceInWei: BigInt! # uint256
-  endTime: BigInt! # uint256
-  naffleType: Int! # uint8
-  tokenContractType: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+enum TicketActivityType {
+  PURCHASED
+  TRANSFERED
+  ALLOCATED_TO_NAFFLE
+  BURNED
 }
 
-type L2NaffleFinished @entity(immutable: true) {
+type L2User @entity {
   id: Bytes!
-  naffleId: BigInt! # uint256
-  winner: Bytes! # address
-  winningTicketIdOnNaffle: BigInt! # uint256
-  messageHash: Bytes! # bytes32
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  address: Bytes!
+  naffles: [L2Naffle!]! @derivedFrom(field: "owner")
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
+  transactionHash: Bytes
 }
 
-type L2NafflePostponed @entity(immutable: true) {
+type Collection @entity {
   id: Bytes!
-  naffleId: BigInt! # uint256
-  newEndTime: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  address: Bytes!
+  naffles: [L2Naffle!]! @derivedFrom(field: "collection")
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
+  transactionHash: Bytes
 }
 
-type OpenEntryTicketsUsed @entity(immutable: true) {
+type L2Naffle @entity {
   id: Bytes!
-  naffleId: BigInt! # uint256
-  owner: Bytes! # address
-  ticketIds: [BigInt!]! # uint256[]
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  collection: Collection
+  owner: L2User
+  winningTicketId: BigInt
+  naffleIdOnContract: BigInt
+  nftId: BigInt
+  maxTickets: BigInt
+  maxOpenEntryTickets: BigInt
+  ticketPriceInWei: BigInt
+  endDate: BigInt!
+  canceledOnL1MessageHash: Bytes
+  canceledOnL2TransactionHash: Bytes
+  winnerSetOnL1MessageHash: Bytes
+  winnerSetOnL2TransactionHash: Bytes
+  winnerAddress: Bytes
+  naffleStatus: L2NaffleStatus
+  randomNumberRequested: Boolean
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
+  transactionHash: Bytes
+  type: Int
 }
 
-type OwnershipTransferred @entity(immutable: true) {
+type TicketActivity @entity {
   id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  paidTicket: PaidTicket
+  openEntryTicket: OpenEntryTicket
+  naffle: L2Naffle
+  owner: L2User!
+  type: TicketActivityType!
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
 }
 
-type RoleAdminChanged @entity(immutable: true) {
+type PaidTicket @entity {
   id: Bytes!
-  role: Bytes! # bytes32
-  previousAdminRole: Bytes! # bytes32
-  newAdminRole: Bytes! # bytes32
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  owner: L2User
+  naffle: L2Naffle
+  ticketIdOnContract: BigInt
+  ticketIdOnNaffle: [BigInt!]
+  activities: [TicketActivity!]! @derivedFrom(field: "paidTicket")
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
+  transactionHash: Bytes
 }
 
-type RoleGranted @entity(immutable: true) {
+type OpenEntryTicket @entity {
   id: Bytes!
-  role: Bytes! # bytes32
-  account: Bytes! # address
-  sender: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type RoleRevoked @entity(immutable: true) {
-  id: Bytes!
-  role: Bytes! # bytes32
-  account: Bytes! # address
-  sender: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type TicketsBought @entity(immutable: true) {
-  id: Bytes!
-  naffleId: BigInt! # uint256
-  buyer: Bytes! # address
-  ticketIds: [BigInt!]! # uint256[]
-  ticketPriceInWei: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  owner: L2User
+  naffleId: BigInt
+  ticketIdOnContract: BigInt
+  ticketIdOnNaffle: [BigInt!]
+  activities: [TicketActivity!]! @derivedFrom(field: "openEntryTicket")
+  naffle: L2Naffle
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
+  transactionHash: Bytes
 }
