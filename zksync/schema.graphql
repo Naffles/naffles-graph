@@ -70,7 +70,7 @@ type PaidTicket @entity {
   owner: L2User
   naffle: L2Naffle
   ticketIdOnContract: BigInt
-  ticketIdOnNaffle: [BigInt!]
+  ticketIdOnNaffle: BigInt
   activities: [TicketActivity!]! @derivedFrom(field: "paidTicket")
   timestampLastUpdate: BigInt
   blocknumberLastUpdate: BigInt
@@ -82,7 +82,7 @@ type OpenEntryTicket @entity {
   owner: L2User
   naffleId: BigInt
   ticketIdOnContract: BigInt
-  ticketIdOnNaffle: [BigInt!]
+  ticketIdOnNaffle: BigInt
   activities: [TicketActivity!]! @derivedFrom(field: "openEntryTicket")
   naffle: L2Naffle
   timestampLastUpdate: BigInt

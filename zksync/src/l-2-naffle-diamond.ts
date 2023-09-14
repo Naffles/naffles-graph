@@ -23,7 +23,7 @@ import {
   PaidTicket,
   OpenEntryTicket,
 } from "../generated/schema";
-import { Bytes } from "@graphprotocol/graph-ts";
+import { bigInt, BigInt, Bytes } from "@graphprotocol/graph-ts";
 
 export function handleL2NaffleCancelled(event: L2NaffleCancelledEvent): void {
   let entity = L2Naffle.load(
@@ -47,6 +47,7 @@ export function handleL2NaffleCreated(event: L2NaffleCreatedEvent): void {
   entity.naffleIdOnContract = event.params.naffleId;
   entity.nftId = event.params.nftId;
   entity.maxTickets = event.params.paidTicketSpots;
+  entity.maxOpenEntryTickets = event.params.openEntryTicketSpots;
   entity.ticketPriceInWei = event.params.ticketPriceInWei;
   entity.endDate = event.params.endTime;
   entity.timestampLastUpdate = event.block.timestamp;
@@ -127,12 +128,15 @@ export function handleTicketsBought(event: TicketsBoughtEvent): void {
   let entity = L2Naffle.load(
     Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
   );
-  if (entity != null) {
-    entity.timestampLastUpdate = event.block.timestamp;
-    entity.blocknumberLastUpdate = event.block.number;
-    entity.transactionHash = event.transaction.hash;
-    entity.save();
-  }
+    return;
+    
+  //if (entity != null) {
+    //entity.timestampLastUpdate = event.block.timestamp;
+    //entity.blocknumberLastUpdate = event.block.number;
+    //entity.transactionHash = event.transaction.hash;
+     
+    //entity.save();
+  //}
 }
 
 export function handleRandomNumberRequested(
@@ -182,15 +186,35 @@ export function handleTicketsDetachedFromNaffle(
 }
 
 export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
-  let entity = new PaidTicket(
-    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
-  );
-  entity.owner = event.params.owner;
-  entity.timestampLastUpdate = event.block.timestamp;
-  entity.blocknumberLastUpdate = event.block.number;
-  entity.transactionHash = event.transaction.hash;
-  entity.ticketIdOnContract = event.params.startingTicketId;
-  entity.save();
+  let userEntity = L2User.load(event.params.owner);
+  if (userEntity == null) {
+    userEntity = new L2User(event.params.owner);
+    userEntity.address = event.params.owner;
+    userEntity.timestampLastUpdate = event.block.timestamp;
+    userEntity.blocknumberLastUpdate = event.block.number;
+    userEntity.transactionHash = event.transaction.hash;
+    userEntity.save();
+  }
+
+  // loop through the ticket ids in the event and create a PaidTicket entity for each
+  for (let i = 0; i < event.params.ticketIds.length; i++) {
+      let entity = new PaidTicket(
+        Bytes.fromByteArray(Bytes.fromBigInt(event.params.ticketIds[i]))
+      );
+      entity.naffle = Bytes.fromBigInt(event.params.naffleId);
+      entity.owner = userEntity.id;
+      entity.timestampLastUpdate = event.block.timestamp;
+      entity.blocknumberLastUpdate = event.block.number;
+      entity.transactionHash = event.transaction.hash;
+      entity.ticketIdOnContract = event.params.ticketIds[i];
+      const bigIndex = BigInt.fromI32(i);
+      const bigStartingTicketId = event.params.startingTicketId;
+      // add the 2 big ints together:
+      const sum = bigStartingTicketId.plus(bigIndex);
+
+      entity.ticketIdOnNaffle = sum;
+      entity.save();
+    }
 }
 
 export function handlePaidTicketsRefundedAndBurned(
