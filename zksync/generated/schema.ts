@@ -847,6 +847,32 @@ export class PaidTicket extends Entity {
     }
   }
 
+  get refunded(): boolean {
+    let value = this.get("refunded");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set refunded(value: boolean) {
+    this.set("refunded", Value.fromBoolean(value));
+  }
+
+  get redeemed(): boolean {
+    let value = this.get("redeemed");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set redeemed(value: boolean) {
+    this.set("redeemed", Value.fromBoolean(value));
+  }
+
   get ticketIdOnContract(): BigInt | null {
     let value = this.get("ticketIdOnContract");
     if (!value || value.kind == ValueKind.NULL) {
