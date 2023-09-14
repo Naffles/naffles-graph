@@ -864,20 +864,20 @@ export class PaidTicket extends Entity {
     }
   }
 
-  get ticketIdOnNaffle(): Array<BigInt> | null {
+  get ticketIdOnNaffle(): BigInt | null {
     let value = this.get("ticketIdOnNaffle");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBigIntArray();
+      return value.toBigInt();
     }
   }
 
-  set ticketIdOnNaffle(value: Array<BigInt> | null) {
+  set ticketIdOnNaffle(value: BigInt | null) {
     if (!value) {
       this.unset("ticketIdOnNaffle");
     } else {
-      this.set("ticketIdOnNaffle", Value.fromBigIntArray(<Array<BigInt>>value));
+      this.set("ticketIdOnNaffle", Value.fromBigInt(<BigInt>value));
     }
   }
 
@@ -1037,20 +1037,20 @@ export class OpenEntryTicket extends Entity {
     }
   }
 
-  get ticketIdOnNaffle(): Array<BigInt> | null {
+  get ticketIdOnNaffle(): BigInt | null {
     let value = this.get("ticketIdOnNaffle");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBigIntArray();
+      return value.toBigInt();
     }
   }
 
-  set ticketIdOnNaffle(value: Array<BigInt> | null) {
+  set ticketIdOnNaffle(value: BigInt | null) {
     if (!value) {
       this.unset("ticketIdOnNaffle");
     } else {
-      this.set("ticketIdOnNaffle", Value.fromBigIntArray(<Array<BigInt>>value));
+      this.set("ticketIdOnNaffle", Value.fromBigInt(<BigInt>value));
     }
   }
 

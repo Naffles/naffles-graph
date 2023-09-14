@@ -75,6 +75,8 @@ type PaidTicket @entity {
   timestampLastUpdate: BigInt
   blocknumberLastUpdate: BigInt
   transactionHash: Bytes
+  redeemed: Boolean
+  refunded: Boolean
 }
 
 type OpenEntryTicket @entity {

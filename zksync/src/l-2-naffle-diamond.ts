@@ -207,12 +207,9 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
       entity.blocknumberLastUpdate = event.block.number;
       entity.transactionHash = event.transaction.hash;
       entity.ticketIdOnContract = event.params.ticketIds[i];
-      const bigIndex = BigInt.fromI32(i);
-      const bigStartingTicketId = event.params.startingTicketId;
-      // add the 2 big ints together:
-      const sum = bigStartingTicketId.plus(bigIndex);
-
-      entity.ticketIdOnNaffle = sum;
+      entity.ticketIdOnNaffle = event.params.startingTicketId.plus(BigInt.fromI32(i));
+      entity.redeemed = false;
+      entity.refunded = false;
       entity.save();
     }
 }
@@ -220,17 +217,19 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
 export function handlePaidTicketsRefundedAndBurned(
   event: PaidTicketsRefundedAndBurnedEvent
 ): void {
-  let entity = PaidTicket.load(
-    Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
-  );
 
-  if (entity != null) {
-    entity.timestampLastUpdate = event.block.timestamp;
-    entity.blocknumberLastUpdate = event.block.number;
-    entity.transactionHash = event.transaction.hash;
-    entity.ticketIdOnNaffle = event.params.ticketIdsOnNaffle;
-    entity.save();
-  }
+  for (let i = 0; i < event.params.ticketIds.length; i++) {
+      let entity = PaidTicket.load(
+        Bytes.fromByteArray(Bytes.fromBigInt(event.params.ticketIds[i]))
+      );
+      if (entity != null) {
+        entity.timestampLastUpdate = event.block.timestamp;
+        entity.blocknumberLastUpdate = event.block.number;
+        entity.transactionHash = event.transaction.hash;
+        entity.refunded = true;     
+        entity.save();
+      }
+    }
 }
 
 export function handleTransfer(event: TransferEvent): void {
@@ -238,8 +237,18 @@ export function handleTransfer(event: TransferEvent): void {
     Bytes.fromByteArray(Bytes.fromBigInt(event.params.tokenId))
   );
 
+  let userEntity = L2User.load(event.params.to);
+  if (userEntity == null) {
+    userEntity = new L2User(event.params.to);
+    userEntity.address = event.params.to;
+    userEntity.timestampLastUpdate = event.block.timestamp;
+    userEntity.blocknumberLastUpdate = event.block.number;
+    userEntity.transactionHash = event.transaction.hash;
+    userEntity.save();
+  }
+
   if (entity != null) {
-    entity.ticketIdOnContract = event.params.tokenId;
+    entity.owner = userEntity.id;
     entity.timestampLastUpdate = event.block.timestamp;
     entity.blocknumberLastUpdate = event.block.number;
     entity.transactionHash = event.transaction.hash;
