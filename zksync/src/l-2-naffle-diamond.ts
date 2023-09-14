@@ -148,12 +148,13 @@ export function handleTicketsAttachedToNaffle(
       let entity = new OpenEntryTicket(
         Bytes.fromByteArray(Bytes.fromBigInt(event.params.ticketIds[i]))
       );
-      entity.naffleId = event.params.naffleId;
+      entity.naffle = Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
       entity.owner = event.params.owner;
       entity.timestampLastUpdate = event.block.timestamp;
       entity.blocknumberLastUpdate = event.block.number;
       entity.transactionHash = event.transaction.hash;
       entity.ticketIdOnNaffle = event.params.startingTicketId.plus(BigInt.fromI32(i));
+      entity.ticketIdOnContract = event.params.ticketIds[i];
       entity.save();
   }
 }
@@ -191,7 +192,7 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
       let entity = new PaidTicket(
         Bytes.fromByteArray(Bytes.fromBigInt(event.params.ticketIds[i]))
       );
-      entity.naffle = Bytes.fromBigInt(event.params.naffleId);
+      entity.naffle = Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
       entity.owner = userEntity.id;
       entity.timestampLastUpdate = event.block.timestamp;
       entity.blocknumberLastUpdate = event.block.number;

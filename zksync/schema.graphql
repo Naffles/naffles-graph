@@ -2,6 +2,7 @@ enum L2NaffleStatus {
   ACTIVE
   CLOSED
   POSTPONED
+  SELECTING_WINNER
   FINISHED
 }
 
