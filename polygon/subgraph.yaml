@@ -6,7 +6,7 @@ dataSources:
     name: NaffleVRF
     network: goerli
     source:
-      address: "0x50616111B78D002e4FcDaD3d40d2B96760f28755"
+      address: "0x7e9780fb04b486bd583ad50857115d8567f7be18"
       abi: NaffleVRF
       startBlock: 9527732
     mapping:
