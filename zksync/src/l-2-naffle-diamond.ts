@@ -223,6 +223,36 @@ export function handlePaidTicketsRefundedAndBurned(
     }
 }
 
+export function handleTransferOpenEntry(event: TransferEvent): void {
+  let entity = OpenEntryTicket.load(
+    Bytes.fromByteArray(Bytes.fromBigInt(event.params.tokenId))
+  );
+  if (entity == null) {
+    entity = new OpenEntryTicket(
+        Bytes.fromByteArray(Bytes.fromBigInt(event.params.tokenId))
+    );
+  }
+
+  let userEntity = L2User.load(event.params.to);
+
+  if (userEntity == null) {
+    userEntity = new L2User(event.params.to);
+    userEntity.address = event.params.to;
+    userEntity.timestampLastUpdate = event.block.timestamp;
+    userEntity.blocknumberLastUpdate = event.block.number;
+    userEntity.transactionHash = event.transaction.hash;
+    userEntity.save();
+  }
+
+  if (entity != null) {
+    entity.owner = userEntity.id;
+    entity.timestampLastUpdate = event.block.timestamp;
+    entity.blocknumberLastUpdate = event.block.number;
+    entity.transactionHash = event.transaction.hash;
+    entity.save();
+  }
+}
+
 export function handleTransfer(event: TransferEvent): void {
   let entity = PaidTicket.load(
     Bytes.fromByteArray(Bytes.fromBigInt(event.params.tokenId))
@@ -240,6 +270,7 @@ export function handleTransfer(event: TransferEvent): void {
 
   if (entity != null) {
     entity.owner = userEntity.id;
+    entity.ticketIdOnContract = event.params.tokenId;
     entity.timestampLastUpdate = event.block.timestamp;
     entity.blocknumberLastUpdate = event.block.number;
     entity.transactionHash = event.transaction.hash;
