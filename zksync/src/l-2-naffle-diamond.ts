@@ -215,6 +215,7 @@ export function handlePaidTicketsRefundedAndBurned(
       );
       if (entity != null) {
         entity.timestampLastUpdate = event.block.timestamp;
+        entity.ticketIdOnContract = event.params.tokenId;
         entity.blocknumberLastUpdate = event.block.number;
         entity.transactionHash = event.transaction.hash;
         entity.refunded = true;     
