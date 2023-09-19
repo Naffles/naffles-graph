@@ -215,7 +215,6 @@ export function handlePaidTicketsRefundedAndBurned(
       );
       if (entity != null) {
         entity.timestampLastUpdate = event.block.timestamp;
-        entity.ticketIdOnContract = event.params.tokenId;
         entity.blocknumberLastUpdate = event.block.number;
         entity.transactionHash = event.transaction.hash;
         entity.refunded = true;     
@@ -247,6 +246,7 @@ export function handleTransferOpenEntry(event: TransferEvent): void {
 
   if (entity != null) {
     entity.owner = userEntity.id;
+    entity.ticketIdOnContract = event.params.tokenId;
     entity.timestampLastUpdate = event.block.timestamp;
     entity.blocknumberLastUpdate = event.block.number;
     entity.transactionHash = event.transaction.hash;
