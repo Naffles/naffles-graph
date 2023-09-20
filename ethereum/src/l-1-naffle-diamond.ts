@@ -16,8 +16,10 @@ export function handleL1NaffleCancelled(event: L1NaffleCancelledEvent): void {
     entity.blocknumberLastUpdate = event.block.number;
     entity.transactionHash = event.transaction.hash;
     entity.naffleStatus = "CLOSED";
+    entity.canceledOnL1 = true;
     entity.save();
   }
+ 
 }
 
 export function handleL1NaffleCreated(event: L1NaffleCreatedEvent): void {
