@@ -72,6 +72,7 @@ export function handleL1NaffleWinnerSet(event: L1NaffleWinnerSetEvent): void {
     entity.timestampLastUpdate = event.block.timestamp;
     entity.blocknumberLastUpdate = event.block.number;
     entity.transactionHash = event.transaction.hash;
+    entity.winnerSetOnL1 = true;
     entity.save();
   }
 }
