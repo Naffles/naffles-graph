@@ -15,6 +15,7 @@ type L1Naffle @entity {
   endDate: BigInt!
   canceledOnL1: Boolean
   canceledOnL1MessageHash: String
+  winnerSetOnL1: Boolean
   winnerAddress: Bytes
   naffleStatus: L1NaffleStatus
   timestampLastUpdate: BigInt
