@@ -2,6 +2,7 @@ enum L2NaffleStatus {
   ACTIVE
   CLOSED
   POSTPONED
+  SELECTING_WINNER
   FINISHED
 }
 
@@ -70,11 +71,13 @@ type PaidTicket @entity {
   owner: L2User
   naffle: L2Naffle
   ticketIdOnContract: BigInt
-  ticketIdOnNaffle: [BigInt!]
+  ticketIdOnNaffle: BigInt
   activities: [TicketActivity!]! @derivedFrom(field: "paidTicket")
   timestampLastUpdate: BigInt
   blocknumberLastUpdate: BigInt
   transactionHash: Bytes
+  redeemed: Boolean
+  refunded: Boolean
 }
 
 type OpenEntryTicket @entity {
@@ -82,7 +85,7 @@ type OpenEntryTicket @entity {
   owner: L2User
   naffleId: BigInt
   ticketIdOnContract: BigInt
-  ticketIdOnNaffle: [BigInt!]
+  ticketIdOnNaffle: BigInt
   activities: [TicketActivity!]! @derivedFrom(field: "openEntryTicket")
   naffle: L2Naffle
   timestampLastUpdate: BigInt

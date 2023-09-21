@@ -1,71 +1,44 @@
-type L1NaffleCancelled @entity(immutable: true) {
+enum L1NaffleStatus {
+  ACTIVE
+  CLOSED
+  FINISHED
+}
+type L1Naffle @entity {
   id: Bytes!
-  naffleId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  collection: Collection
+  owner: L1User
+  winningTicketId: BigInt
+  naffleIdOnContract: BigInt!
+  nftId: BigInt!
+  maxTickets: BigInt
+  ticketPriceInWei: BigInt!
+  endDate: BigInt!
+  canceledOnL1: Boolean
+  canceledOnL1MessageHash: String
+  winnerSetOnL1: Boolean
+  winnerAddress: Bytes
+  naffleStatus: L1NaffleStatus
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
+  transactionHash: Bytes
+  winningNumber: BigInt
+  requestId: BigInt
+  type: Int
+}
+type Collection @entity {
+  id: Bytes!
+  address: Bytes!
+  naffles: [L1Naffle!]! @derivedFrom(field: "collection")
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
+  transactionHash: Bytes
 }
 
-type L1NaffleCreated @entity(immutable: true) {
+type L1User @entity {
   id: Bytes!
-  naffleId: BigInt! # uint256
-  owner: Bytes! # address
-  ethTokenAddress: Bytes! # address
-  nftId: BigInt! # uint256
-  paidTicketSpots: BigInt! # uint256
-  ticketPriceInWei: BigInt! # uint256
-  endTime: BigInt! # uint256
-  naffleType: Int! # uint8
-  tokenContractType: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type L1NaffleWinnerSet @entity(immutable: true) {
-  id: Bytes!
-  naffleId: BigInt! # uint256
-  winner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type RoleAdminChanged @entity(immutable: true) {
-  id: Bytes!
-  role: Bytes! # bytes32
-  previousAdminRole: Bytes! # bytes32
-  newAdminRole: Bytes! # bytes32
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type RoleGranted @entity(immutable: true) {
-  id: Bytes!
-  role: Bytes! # bytes32
-  account: Bytes! # address
-  sender: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type RoleRevoked @entity(immutable: true) {
-  id: Bytes!
-  role: Bytes! # bytes32
-  account: Bytes! # address
-  sender: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  address: Bytes!
+  naffles: [L1Naffle!]! @derivedFrom(field: "owner")
+  timestampLastUpdate: BigInt
+  blocknumberLastUpdate: BigInt
+  transactionHash: Bytes
 }

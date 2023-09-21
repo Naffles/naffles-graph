@@ -16,8 +16,10 @@ export function handleL1NaffleCancelled(event: L1NaffleCancelledEvent): void {
     entity.blocknumberLastUpdate = event.block.number;
     entity.transactionHash = event.transaction.hash;
     entity.naffleStatus = "CLOSED";
+    entity.canceledOnL1 = true;
     entity.save();
   }
+ 
 }
 
 export function handleL1NaffleCreated(event: L1NaffleCreatedEvent): void {
@@ -33,6 +35,8 @@ export function handleL1NaffleCreated(event: L1NaffleCreatedEvent): void {
   entity.timestampLastUpdate = event.block.timestamp;
   entity.blocknumberLastUpdate = event.block.number;
   entity.transactionHash = event.transaction.hash;
+  entity.naffleStatus = "ACTIVE";
+  entity.type = event.params.naffleType;
   let userEntity = L1User.load(event.params.owner);
   if (userEntity == null) {
     userEntity = new L1User(event.params.owner);
@@ -44,10 +48,10 @@ export function handleL1NaffleCreated(event: L1NaffleCreatedEvent): void {
   }
   entity.owner = userEntity.id;
 
-  let collectionEntity = Collection.load(event.params.owner);
+  let collectionEntity = Collection.load(event.params.ethTokenAddress);
   if (collectionEntity == null) {
-    collectionEntity = new Collection(event.params.owner);
-    collectionEntity.address = event.params.owner;
+    collectionEntity = new Collection(event.params.ethTokenAddress);
+    collectionEntity.address = event.params.ethTokenAddress;
     collectionEntity.timestampLastUpdate = event.block.timestamp;
     collectionEntity.blocknumberLastUpdate = event.block.number;
     collectionEntity.transactionHash = event.transaction.hash;
@@ -68,6 +72,7 @@ export function handleL1NaffleWinnerSet(event: L1NaffleWinnerSetEvent): void {
     entity.timestampLastUpdate = event.block.timestamp;
     entity.blocknumberLastUpdate = event.block.number;
     entity.transactionHash = event.transaction.hash;
+    entity.winnerSetOnL1 = true;
     entity.save();
   }
 }

@@ -185,6 +185,19 @@ export class L1Naffle extends Entity {
     this.set("canceledOnL1", Value.fromBoolean(value));
   }
 
+  get winnerSetOnL1(): boolean {
+    let value = this.get("winnerSetOnL1");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set winnerSetOnL1(value: boolean) {
+    this.set("winnerSetOnL1", Value.fromBoolean(value));
+  }
+
   get canceledOnL1MessageHash(): string | null {
     let value = this.get("canceledOnL1MessageHash");
     if (!value || value.kind == ValueKind.NULL) {
