@@ -48,10 +48,10 @@ export function handleL1NaffleCreated(event: L1NaffleCreatedEvent): void {
   }
   entity.owner = userEntity.id;
 
-  let collectionEntity = Collection.load(event.params.owner);
+  let collectionEntity = Collection.load(event.params.ethTokenAddress);
   if (collectionEntity == null) {
-    collectionEntity = new Collection(event.params.owner);
-    collectionEntity.address = event.params.owner;
+    collectionEntity = new Collection(event.params.ethTokenAddress);
+    collectionEntity.address = event.params.ethTokenAddress;
     collectionEntity.timestampLastUpdate = event.block.timestamp;
     collectionEntity.blocknumberLastUpdate = event.block.number;
     collectionEntity.transactionHash = event.transaction.hash;
