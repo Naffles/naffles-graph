@@ -153,7 +153,7 @@ export function handleTicketsAttachedToNaffle(
       entity.timestampLastUpdate = event.block.timestamp;
       entity.blocknumberLastUpdate = event.block.number;
       entity.transactionHash = event.transaction.hash;
-      entity.ticketIdOnNaffle = event.params.startingTicketId.plus(BigInt.fromI32(i));
+      entity.ticketIdOnNaffle = event.params.startingTicketId.plus(BigInt.fromI32(i)).minus(BigInt.fromI32(1));
       entity.ticketIdOnContract = event.params.ticketIds[i];
       entity.save();
   }
