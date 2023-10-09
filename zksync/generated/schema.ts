@@ -74,6 +74,16 @@ export class L2User extends Entity {
       "naffles"
     );
   }
+ 
+ get paidTickets(): PaidTicketLoader {
+    return new PaidTicketLoader(
+        "L2User",
+        this.get("id")!
+            .toBytes()
+            .toHexString(),
+        "paidTickets"
+    );
+  }
 
   get timestampLastUpdate(): BigInt | null {
     let value = this.get("timestampLastUpdate");
@@ -1176,6 +1186,26 @@ export class L2NaffleLoader extends Entity {
     return changetype<L2Naffle[]>(value);
   }
 }
+
+
+export class PaidTicketLoader extends Entity {
+    _entity: string;
+    _field: string;
+    _id: string;
+
+    constructor(entity: string, id: string, field: string) {
+        super();
+        this._entity = entity;
+        this._id = id;
+        this._field = field;
+    }
+
+    load(): PaidTicket[] {
+        let value = store.loadRelated(this._entity, this._id, this._field);
+        return changetype<PaidTicket[]>(value);
+    }
+}
+
 
 export class TicketActivityLoader extends Entity {
   _entity: string;

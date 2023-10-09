@@ -143,20 +143,20 @@ export class PaidTicketsMinted__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get ticketIds(): Array<BigInt> {
-    return this._event.parameters[1].value.toBigIntArray();
-  }
-
   get naffleId(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 
   get ticketPriceInWei(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 
   get startingTicketId(): BigInt {
     return this._event.parameters[4].value.toBigInt();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -181,12 +181,8 @@ export class PaidTicketsRefundedAndBurned__Params {
     return this._event.parameters[1].value.toBigInt();
   }
 
-  get ticketIds(): Array<BigInt> {
-    return this._event.parameters[2].value.toBigIntArray();
-  }
-
-  get ticketIdsOnNaffle(): Array<BigInt> {
-    return this._event.parameters[3].value.toBigIntArray();
+  get numberOfPaidTickets(): BigInt { 
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 

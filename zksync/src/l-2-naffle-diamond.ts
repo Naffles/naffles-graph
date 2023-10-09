@@ -188,17 +188,18 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
     userEntity.save();
   }
 
-  for (let i = 0; i < event.params.ticketIds.length; i++) {
+  for (let i = BigInt.fromI32(0); i < event.params.amount; i.plus(BigInt.fromI32(1))) {
+      let ticketId = event.params.startingTicketId.plus(i);
       let entity = new PaidTicket(
-        Bytes.fromByteArray(Bytes.fromBigInt(event.params.ticketIds[i]))
+        Bytes.fromByteArray(Bytes.fromBigInt(ticketId))
       );
       entity.naffle = Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
       entity.owner = userEntity.id;
       entity.timestampLastUpdate = event.block.timestamp;
       entity.blocknumberLastUpdate = event.block.number;
       entity.transactionHash = event.transaction.hash;
-      entity.ticketIdOnContract = event.params.ticketIds[i];
-      entity.ticketIdOnNaffle = event.params.startingTicketId.plus(BigInt.fromI32(i));
+      entity.ticketIdOnContract = ticketId;
+      entity.ticketIdOnNaffle = event.params.startingTicketId.plus(i);
       entity.redeemed = false;
       entity.refunded = false;
       entity.save();
@@ -208,18 +209,29 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
 export function handlePaidTicketsRefundedAndBurned(
   event: PaidTicketsRefundedAndBurnedEvent
 ): void {
-
-  for (let i = 0; i < event.params.ticketIds.length; i++) {
-      let entity = PaidTicket.load(
-        Bytes.fromByteArray(Bytes.fromBigInt(event.params.ticketIds[i]))
-      );
-      if (entity != null) {
-        entity.timestampLastUpdate = event.block.timestamp;
-        entity.blocknumberLastUpdate = event.block.number;
-        entity.transactionHash = event.transaction.hash;
-        entity.refunded = true;     
-        entity.save();
-      }
+  let userEntity = L2User.load(event.params.owner);
+  let tickets = userEntity?.paidTickets.load();
+  if (tickets == null) {
+    return;
+  }
+  // the amount in paidTicketsRefundedAndBurned is always the total amount of tickets a user has. 
+  // so we can just loop through all the user tickets and mark them as refunded for a specific naffle
+  for (let i = 0; i < tickets?.length; i++) {
+        let entity: PaidTicket = tickets[i];
+        if (entity.naffle == null) {
+            continue
+        }
+        let naffle = L2Naffle.load(entity.naffle);
+        if (naffle == null) {
+            continue;
+        }
+        if (naffle.naffleIdOnContract == event.params.naffleId) {
+            entity.timestampLastUpdate = event.block.timestamp;
+            entity.blocknumberLastUpdate = event.block.number;
+            entity.transactionHash = event.transaction.hash;
+            entity.refunded = true;     
+            entity.save();
+        }
     }
 }
 
