@@ -320,57 +320,61 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   // }
 }
 
-// export function handleTransferBatch(event: TransferBatchEvent): void {
-  // let fromUserEntity = L2User.load(event.params.from);
-  // if (fromUserEntity == null) {
-  //   fromUserEntity = new L2User(event.params.from);
-  //   fromUserEntity.address = event.params.from;
-  //   fromUserEntity.timestampLastUpdate = event.block.timestamp;
-  //   fromUserEntity.blocknumberLastUpdate = event.block.number;
-  //   fromUserEntity.transactionHash = event.transaction.hash;
-  //   fromUserEntity.save();
-  // }
-  //
-  // let toUserEntity = L2User.load(event.params.to);
-  // if (toUserEntity == null) {
-  //   toUserEntity = new L2User(event.params.to);
-  //   toUserEntity.address = event.params.to;
-  //   toUserEntity.timestampLastUpdate = event.block.timestamp;
-  //   toUserEntity.blocknumberLastUpdate = event.block.number;
-  //   toUserEntity.transactionHash = event.transaction.hash;
-  //   toUserEntity.save();
-  // }
-  //
-  //
-  // let paidTickets = fromUserEntity?.paidTickets.load();
-  //   if (paidTickets != null) {
-  //       for (let k = 0; k < event.params.ids.length; k++) {
-  //       var amountTransferred = BigInt.fromI32(0);
-  //         let currentNaffleId = event.params.ids[k];
-  //           for (let i = 0; i < paidTickets.length; i++) {
-  //               let paidTicket: PaidTicket = paidTickets[i];
-  //               let naffleId = paidTicket.naffle;
-  //               if (naffleId == null) {
-  //                   // this never happens but generated code thinks it can
-  //                   continue
-  //               }
-  //               let naffle = L2Naffle.load(naffleId);
-  //               if (naffle == null) {
-  //                   // this never happens but generated code thinks it can
-  //                   continue;
-  //               }
-  //               if (naffle.naffleIdOnContract == currentNaffleId) {
-  //                   paidTicket.timestampLastUpdate = event.block.timestamp;
-  //                   paidTicket.blocknumberLastUpdate = event.block.number;
-  //                   paidTicket.transactionHash = event.transaction.hash;
-  //                   paidTicket.owner = toUserEntity.id;
-  //                   paidTicket.save();
-  //                   amountTransferred = amountTransferred.plus(BigInt.fromI32(1));
-  //               }
-  //               if (amountTransferred == event.params.values[k]) {
-  //                   break;
-  //               }
-  //           }
-  //       }
-  //   }
-// }
+export function handleTransferBatch(event: TransferBatchEvent): void {
+  let fromUserEntity = L2User.load(event.params.from);
+  if (fromUserEntity == null) {
+    fromUserEntity = new L2User(event.params.from);
+    fromUserEntity.address = event.params.from;
+    fromUserEntity.timestampLastUpdate = event.block.timestamp;
+    fromUserEntity.blocknumberLastUpdate = event.block.number;
+    fromUserEntity.transactionHash = event.transaction.hash;
+    fromUserEntity.save();
+  }
+
+  let toUserEntity = L2User.load(event.params.to);
+  if (toUserEntity == null) {
+    toUserEntity = new L2User(event.params.to);
+    toUserEntity.address = event.params.to;
+    toUserEntity.timestampLastUpdate = event.block.timestamp;
+    toUserEntity.blocknumberLastUpdate = event.block.number;
+    toUserEntity.transactionHash = event.transaction.hash;
+    toUserEntity.save();
+  }
+
+  let paidTickets = fromUserEntity.paidTickets.load();
+    if (paidTickets != null) {
+        for (let k = 0; k < event.params.ids.length; k++) {
+        var amountTransferred = BigInt.fromI32(0);
+          let currentNaffleId = event.params.ids[k];
+            for (let i = 0; i < paidTickets.length; i++) {
+                let paidTicket: PaidTicket = paidTickets[i];
+                let naffleId = paidTicket.naffle;
+                if (!naffleId) {
+                    // this never happens but generated code thinks it can
+                    continue
+                }
+                let naffle = L2Naffle.load(naffleId);
+                if (naffle == null) {
+                    // this never happens but generated code thinks it can
+                    continue;
+                }
+                let naffleIdOnContract = naffle.naffleIdOnContract;
+                if (!naffleIdOnContract) {
+                    // this never happens but generated code thinks it can
+                    continue;
+                }
+                if (naffleIdOnContract.equals(currentNaffleId)) {
+                    paidTicket.timestampLastUpdate = event.block.timestamp;
+                    paidTicket.blocknumberLastUpdate = event.block.number;
+                    paidTicket.transactionHash = event.transaction.hash;
+                    paidTicket.owner = toUserEntity.id;
+                    paidTicket.save();
+                    amountTransferred = amountTransferred.plus(BigInt.fromI32(1));
+                }
+                if (amountTransferred == event.params.values[k]) {
+                    break;
+                }
+            }
+        }
+    }
+}
