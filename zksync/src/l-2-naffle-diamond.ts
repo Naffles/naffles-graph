@@ -10,11 +10,13 @@ import {
 import {
   PaidTicketsMinted as PaidTicketsMintedEvent,
   PaidTicketsRefundedAndBurned as PaidTicketsRefundedAndBurnedEvent,
-  Transfer as TransferEvent,
+  TransferSingle as TransferSingleEvent,
+  TransferBatch as TransferBatchEvent,
 } from "../generated/L2PaidTicketDiamond/L2PaidTicketDiamond";
 import {
   TicketsAttachedToNaffle as TicketsAttachedToNaffleEvent,
   TicketsDetachedFromNaffle as TicketsDetachedFromNaffleEvent,
+  Transfer as TransferEvent,
 } from "../generated/L2OpenEntryTicketDiamond/L2OpenEntryTicketDiamond";
 import {
   L2Naffle,
@@ -266,27 +268,109 @@ export function handleTransferOpenEntry(event: TransferEvent): void {
   }
 }
 
-export function handleTransfer(event: TransferEvent): void {
-  let entity = PaidTicket.load(
-    Bytes.fromByteArray(Bytes.fromBigInt(event.params.tokenId))
-  );
-
-  let userEntity = L2User.load(event.params.to);
-  if (userEntity == null) {
-    userEntity = new L2User(event.params.to);
-    userEntity.address = event.params.to;
-    userEntity.timestampLastUpdate = event.block.timestamp;
-    userEntity.blocknumberLastUpdate = event.block.number;
-    userEntity.transactionHash = event.transaction.hash;
-    userEntity.save();
+export function handleTransferSingle(event: TransferSingleEvent): void {
+  let fromUserEntity = L2User.load(event.params.from);
+  if (fromUserEntity == null) {
+    fromUserEntity = new L2User(event.params.from);
+    fromUserEntity.address = event.params.from;
+    fromUserEntity.timestampLastUpdate = event.block.timestamp;
+    fromUserEntity.blocknumberLastUpdate = event.block.number;
+    fromUserEntity.transactionHash = event.transaction.hash;
+    fromUserEntity.save();
   }
 
-  if (entity != null) {
-    entity.owner = userEntity.id;
-    entity.ticketIdOnContract = event.params.tokenId;
-    entity.timestampLastUpdate = event.block.timestamp;
-    entity.blocknumberLastUpdate = event.block.number;
-    entity.transactionHash = event.transaction.hash;
-    entity.save();
+  let toUserEntity = L2User.load(event.params.to);
+  if (toUserEntity == null) {
+    toUserEntity = new L2User(event.params.to);
+    toUserEntity.address = event.params.to;
+    toUserEntity.timestampLastUpdate = event.block.timestamp;
+    toUserEntity.blocknumberLastUpdate = event.block.number;
+    toUserEntity.transactionHash = event.transaction.hash;
+    toUserEntity.save();
   }
+    
+  var amountTransferred = BigInt.fromI32(0);
+
+  let paidTickets = fromUserEntity?.paidTickets.load();
+  if (paidTickets != null) {
+    for (let i = 0; i < paidTickets.length; i++) {
+        let paidTicket: PaidTicket = paidTickets[i];
+        let naffleId = paidTicket.naffle;
+        if (naffleId == null) {
+            // this never happens but generated code thinks it can
+            continue
+        }
+        let naffle = L2Naffle.load(naffleId);
+        if (naffle == null) {
+            // this never happens but generated code thinks it can
+            continue;
+        }
+        if (naffle.naffleIdOnContract == event.params.id) {
+            paidTicket.timestampLastUpdate = event.block.timestamp;
+            paidTicket.blocknumberLastUpdate = event.block.number;
+            paidTicket.transactionHash = event.transaction.hash;
+            paidTicket.owner = toUserEntity.id;
+            paidTicket.save();
+            amountTransferred = amountTransferred.plus(BigInt.fromI32(1));
+        }
+        if (amountTransferred == event.params.value) {
+            return;
+        }
+    }
+  } 
+}
+
+export function handleTransferBatch(event: TransferBatchEvent): void {
+  let fromUserEntity = L2User.load(event.params.from);
+  if (fromUserEntity == null) {
+    fromUserEntity = new L2User(event.params.from);
+    fromUserEntity.address = event.params.from;
+    fromUserEntity.timestampLastUpdate = event.block.timestamp;
+    fromUserEntity.blocknumberLastUpdate = event.block.number;
+    fromUserEntity.transactionHash = event.transaction.hash;
+    fromUserEntity.save();
+  }
+
+  let toUserEntity = L2User.load(event.params.to);
+  if (toUserEntity == null) {
+    toUserEntity = new L2User(event.params.to);
+    toUserEntity.address = event.params.to;
+    toUserEntity.timestampLastUpdate = event.block.timestamp;
+    toUserEntity.blocknumberLastUpdate = event.block.number;
+    toUserEntity.transactionHash = event.transaction.hash;
+    toUserEntity.save();
+  }
+
+
+  let paidTickets = fromUserEntity?.paidTickets.load();
+    if (paidTickets != null) {
+        for (let k = 0; k < event.params.ids.length; k++) {
+        var amountTransferred = BigInt.fromI32(0);
+          let currentNaffleId = event.params.ids[k];
+            for (let i = 0; i < paidTickets.length; i++) {
+                let paidTicket: PaidTicket = paidTickets[i];
+                let naffleId = paidTicket.naffle;
+                if (naffleId == null) {
+                    // this never happens but generated code thinks it can
+                    continue
+                }
+                let naffle = L2Naffle.load(naffleId);
+                if (naffle == null) {
+                    // this never happens but generated code thinks it can
+                    continue;
+                }
+                if (naffle.naffleIdOnContract == currentNaffleId) {
+                    paidTicket.timestampLastUpdate = event.block.timestamp;
+                    paidTicket.blocknumberLastUpdate = event.block.number;
+                    paidTicket.transactionHash = event.transaction.hash;
+                    paidTicket.owner = toUserEntity.id;
+                    paidTicket.save();
+                    amountTransferred = amountTransferred.plus(BigInt.fromI32(1));
+                }
+                if (amountTransferred == event.params.values[k]) {
+                    break;
+                }
+            }
+        }
+    } 
 }

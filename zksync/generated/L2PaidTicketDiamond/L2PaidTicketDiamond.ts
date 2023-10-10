@@ -10,32 +10,6 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class Approval extends ethereum.Event {
-  get params(): Approval__Params {
-    return new Approval__Params(this);
-  }
-}
-
-export class Approval__Params {
-  _event: Approval;
-
-  constructor(event: Approval) {
-    this._event = event;
-  }
-
-  get owner(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get operator(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get tokenId(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-}
-
 export class ApprovalForAll extends ethereum.Event {
   get params(): ApprovalForAll__Params {
     return new ApprovalForAll__Params(this);
@@ -49,7 +23,7 @@ export class ApprovalForAll__Params {
     this._event = event;
   }
 
-  get owner(): Address {
+  get account(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
@@ -152,11 +126,11 @@ export class PaidTicketsMinted__Params {
   }
 
   get startingTicketId(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
+    return this._event.parameters[3].value.toBigInt();
   }
 
   get amount(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
+    return this._event.parameters[4].value.toBigInt();
   }
 }
 
@@ -181,7 +155,7 @@ export class PaidTicketsRefundedAndBurned__Params {
     return this._event.parameters[1].value.toBigInt();
   }
 
-  get numberOfPaidTickets(): BigInt { 
+  get numberOfPaidTickets(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
 }
@@ -264,29 +238,71 @@ export class RoleRevoked__Params {
   }
 }
 
-export class Transfer extends ethereum.Event {
-  get params(): Transfer__Params {
-    return new Transfer__Params(this);
+export class TransferBatch extends ethereum.Event {
+  get params(): TransferBatch__Params {
+    return new TransferBatch__Params(this);
   }
 }
 
-export class Transfer__Params {
-  _event: Transfer;
+export class TransferBatch__Params {
+  _event: TransferBatch;
 
-  constructor(event: Transfer) {
+  constructor(event: TransferBatch) {
     this._event = event;
   }
 
-  get from(): Address {
+  get operator(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get to(): Address {
+  get from(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get tokenId(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+  get to(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get ids(): Array<BigInt> {
+    return this._event.parameters[3].value.toBigIntArray();
+  }
+
+  get values(): Array<BigInt> {
+    return this._event.parameters[4].value.toBigIntArray();
+  }
+}
+
+export class TransferSingle extends ethereum.Event {
+  get params(): TransferSingle__Params {
+    return new TransferSingle__Params(this);
+  }
+}
+
+export class TransferSingle__Params {
+  _event: TransferSingle;
+
+  constructor(event: TransferSingle) {
+    this._event = event;
+  }
+
+  get operator(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get from(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get to(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get id(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get value(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
   }
 }
 

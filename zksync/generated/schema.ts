@@ -74,14 +74,14 @@ export class L2User extends Entity {
       "naffles"
     );
   }
- 
- get paidTickets(): PaidTicketLoader {
+
+  get paidTickets(): PaidTicketLoader {
     return new PaidTicketLoader(
-        "L2User",
-        this.get("id")!
-            .toBytes()
-            .toHexString(),
-        "paidTickets"
+      "L2User",
+      this.get("id")!
+        .toBytes()
+        .toHexString(),
+      "paidTickets"
     );
   }
 
@@ -857,32 +857,6 @@ export class PaidTicket extends Entity {
     }
   }
 
-  get refunded(): boolean {
-    let value = this.get("refunded");
-    if (!value || value.kind == ValueKind.NULL) {
-      return false;
-    } else {
-      return value.toBoolean();
-    }
-  }
-
-  set refunded(value: boolean) {
-    this.set("refunded", Value.fromBoolean(value));
-  }
-
-  get redeemed(): boolean {
-    let value = this.get("redeemed");
-    if (!value || value.kind == ValueKind.NULL) {
-      return false;
-    } else {
-      return value.toBoolean();
-    }
-  }
-
-  set redeemed(value: boolean) {
-    this.set("redeemed", Value.fromBoolean(value));
-  }
-
   get ticketIdOnContract(): BigInt | null {
     let value = this.get("ticketIdOnContract");
     if (!value || value.kind == ValueKind.NULL) {
@@ -976,6 +950,32 @@ export class PaidTicket extends Entity {
     } else {
       this.set("transactionHash", Value.fromBytes(<Bytes>value));
     }
+  }
+
+  get redeemed(): boolean {
+    let value = this.get("redeemed");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set redeemed(value: boolean) {
+    this.set("redeemed", Value.fromBoolean(value));
+  }
+
+  get refunded(): boolean {
+    let value = this.get("refunded");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set refunded(value: boolean) {
+    this.set("refunded", Value.fromBoolean(value));
   }
 }
 
@@ -1187,25 +1187,23 @@ export class L2NaffleLoader extends Entity {
   }
 }
 
-
 export class PaidTicketLoader extends Entity {
-    _entity: string;
-    _field: string;
-    _id: string;
+  _entity: string;
+  _field: string;
+  _id: string;
 
-    constructor(entity: string, id: string, field: string) {
-        super();
-        this._entity = entity;
-        this._id = id;
-        this._field = field;
-    }
+  constructor(entity: string, id: string, field: string) {
+    super();
+    this._entity = entity;
+    this._id = id;
+    this._field = field;
+  }
 
-    load(): PaidTicket[] {
-        let value = store.loadRelated(this._entity, this._id, this._field);
-        return changetype<PaidTicket[]>(value);
-    }
+  load(): PaidTicket[] {
+    let value = store.loadRelated(this._entity, this._id, this._field);
+    return changetype<PaidTicket[]>(value);
+  }
 }
-
 
 export class TicketActivityLoader extends Entity {
   _entity: string;
