@@ -582,9 +582,15 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256[]",
-        "name": "ticketIds",
-        "type": "uint256[]"
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "startingTicketId",
+        "type": "uint256"
       },
       {
         "indexed": false,
