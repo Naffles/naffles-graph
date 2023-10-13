@@ -216,34 +216,51 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
     }
 }
 
-// export function handlePaidTicketsRefundedAndBurned(
-//   event: PaidTicketsRefundedAndBurnedEvent
-// ): void {
-//   let userEntity = L2User.load(event.params.owner);
-//   let tickets = userEntity?.paidTickets.load();
-//   if (tickets == null) {
-//     return;
-//   }
-//   // the amount in paidTicketsRefundedAndBurned is always the total amount of tickets a user has.
-//   // so we can just loop through all the user tickets and mark them as refunded for a specific naffle
-//   for (let i = 0; i < tickets?.length; i++) {
-//         let entity: PaidTicket = tickets[i];
-//         if (entity.naffle == null) {
-//             continue
-//         }
-//         let naffle = L2Naffle.load(entity.naffle);
-//         if (naffle == null) {
-//             continue;
-//         }
-//         if (naffle.naffleIdOnContract == event.params.naffleId) {
-//             entity.timestampLastUpdate = event.block.timestamp;
-//             entity.blocknumberLastUpdate = event.block.number;
-//             entity.transactionHash = event.transaction.hash;
-//             entity.refunded = true;
-//             entity.save();
-//         }
-//     }
-// }
+export function handlePaidTicketsRefundedAndBurned(
+  event: PaidTicketsRefundedAndBurnedEvent
+): void {
+  let userEntity = L2User.load(event.params.owner);
+  if (userEntity == null) {
+    userEntity = new L2User(event.params.owner);
+    userEntity.address = event.params.owner;
+    userEntity.timestampLastUpdate = event.block.timestamp;
+    userEntity.blocknumberLastUpdate = event.block.number;
+    userEntity.transactionHash = event.transaction.hash;
+    userEntity.save();
+  }
+  let tickets = userEntity.paidTickets.load();
+  if (tickets == null) {
+    return;
+  }
+  // the amount in paidTicketsRefundedAndBurned is always the total amount of tickets a user has.
+  // so we can just loop through all the user tickets and mark them as refunded for a specific naffle
+  for (let i = 0; i < tickets.length; i++) {
+        let entity: PaidTicket = tickets[i];
+        if (!entity.naffle) {
+            continue
+        }
+        let naffleId = entity.naffle;
+        if (!naffleId) {
+            continue;
+        }
+        let naffle = L2Naffle.load(naffleId);
+        if (!naffle) {
+            continue;
+        }
+        let naffleIdOnContract = naffle.naffleIdOnContract;
+        if (!naffleIdOnContract) {
+          // this never happens but generated code thinks it can
+          continue;
+        }
+        if (naffleIdOnContract.equals(event.params.naffleId)) {
+            entity.timestampLastUpdate = event.block.timestamp;
+            entity.blocknumberLastUpdate = event.block.number;
+            entity.transactionHash = event.transaction.hash;
+            entity.refunded = true;
+            entity.save();
+        }
+    }
+}
 
 export function handleTransferOpenEntry(event: TransferEvent): void {
   let entity = OpenEntryTicket.load(
