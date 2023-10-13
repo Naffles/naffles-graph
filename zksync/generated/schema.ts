@@ -594,6 +594,40 @@ export class L2Naffle extends Entity {
     }
   }
 
+  get tokenType(): string | null {
+    let value = this.get("tokenType");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set tokenType(value: string | null) {
+    if (!value) {
+      this.unset("tokenType");
+    } else {
+      this.set("tokenType", Value.fromString(<string>value));
+    }
+  }
+
+  get amount(): BigInt | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set amount(value: BigInt | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
   get transactionHash(): Bytes | null {
     let value = this.get("transactionHash");
     if (!value || value.kind == ValueKind.NULL) {

@@ -23,7 +23,7 @@ dataSources:
       eventHandlers:
         - event: L1NaffleCancelled(uint256)
           handler: handleL1NaffleCancelled
-        - event: L1NaffleCreated(uint256,indexed address,indexed address,uint256,uint256,uint256,uint256,uint8,uint8)
+        - event: L1NaffleCreated((address,uint256,uint256,uint8),uint256,indexed address,uint256,uint256,uint256,uint8)
           handler: handleL1NaffleCreated
         - event: L1NaffleWinnerSet(indexed uint256,indexed address)
           handler: handleL1NaffleWinnerSet

@@ -28,7 +28,7 @@ export function handleL1NaffleCreated(event: L1NaffleCreatedEvent): void {
   );
 
   entity.naffleIdOnContract = event.params.naffleId;
-  entity.nftId = event.params.nftId;
+  entity.nftId = event.params.naffleTokenInformation.nftId;
   entity.maxTickets = event.params.paidTicketSpots;
   entity.ticketPriceInWei = event.params.ticketPriceInWei;
   entity.endDate = event.params.endTime;
@@ -37,6 +37,15 @@ export function handleL1NaffleCreated(event: L1NaffleCreatedEvent): void {
   entity.transactionHash = event.transaction.hash;
   entity.naffleStatus = "ACTIVE";
   entity.type = event.params.naffleType;
+  if (event.params.naffleType == 0) {
+    entity.tokenType = "ERC721";
+  } else if (event.params.naffleType == 1) {
+    entity.tokenType = "ERC1155";
+  } else if (event.params.naffleType == 2) {
+    entity.tokenType = "ERC20";
+  }
+
+  entity.amount = event.params.naffleTokenInformation.amount;
   let userEntity = L1User.load(event.params.owner);
   if (userEntity == null) {
     userEntity = new L1User(event.params.owner);
@@ -48,10 +57,10 @@ export function handleL1NaffleCreated(event: L1NaffleCreatedEvent): void {
   }
   entity.owner = userEntity.id;
 
-  let collectionEntity = Collection.load(event.params.ethTokenAddress);
+  let collectionEntity = Collection.load(event.params.naffleTokenInformation.tokenAddress);
   if (collectionEntity == null) {
-    collectionEntity = new Collection(event.params.ethTokenAddress);
-    collectionEntity.address = event.params.ethTokenAddress;
+    collectionEntity = new Collection(event.params.naffleTokenInformation.tokenAddress);
+    collectionEntity.address = event.params.naffleTokenInformation.tokenAddress;
     collectionEntity.timestampLastUpdate = event.block.timestamp;
     collectionEntity.blocknumberLastUpdate = event.block.number;
     collectionEntity.transactionHash = event.transaction.hash;

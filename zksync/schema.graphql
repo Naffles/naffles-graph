@@ -32,6 +32,12 @@ type Collection @entity {
   transactionHash: Bytes
 }
 
+enum TokenType {
+  ERC721
+  ERC1155
+  ERC20
+}
+
 type L2Naffle @entity {
   id: Bytes!
   collection: Collection
@@ -52,6 +58,8 @@ type L2Naffle @entity {
   randomNumberRequested: Boolean
   timestampLastUpdate: BigInt
   blocknumberLastUpdate: BigInt
+  tokenType: TokenType
+  amount: BigInt
   transactionHash: Bytes
   type: Int
 }

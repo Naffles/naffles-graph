@@ -3,6 +3,11 @@ enum L1NaffleStatus {
   CLOSED
   FINISHED
 }
+enum TokenType {
+  ERC721
+  ERC1155
+  ERC20
+}
 type L1Naffle @entity {
   id: Bytes!
   collection: Collection
@@ -21,6 +26,8 @@ type L1Naffle @entity {
   timestampLastUpdate: BigInt
   blocknumberLastUpdate: BigInt
   transactionHash: Bytes
+  tokenType: TokenType 
+  amount: BigInt
   winningNumber: BigInt
   requestId: BigInt
   type: Int

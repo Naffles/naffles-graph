@@ -320,6 +320,34 @@
     "anonymous": false,
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "nftId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum NaffleTypes.TokenContractType",
+            "name": "naffleTokenType",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct NaffleTypes.NaffleTokenInformation",
+        "name": "naffleTokenInformation",
+        "type": "tuple"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "naffleId",
@@ -330,18 +358,6 @@
         "internalType": "address",
         "name": "owner",
         "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "ethTokenAddress",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "nftId",
-        "type": "uint256"
       },
       {
         "indexed": false,
@@ -371,12 +387,6 @@
         "indexed": true,
         "internalType": "enum NaffleTypes.NaffleType",
         "name": "naffleType",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "enum NaffleTypes.TokenContractType",
-        "name": "tokenContractType",
         "type": "uint8"
       }
     ],

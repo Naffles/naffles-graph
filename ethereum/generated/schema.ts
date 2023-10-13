@@ -185,19 +185,6 @@ export class L1Naffle extends Entity {
     this.set("canceledOnL1", Value.fromBoolean(value));
   }
 
-  get winnerSetOnL1(): boolean {
-    let value = this.get("winnerSetOnL1");
-    if (!value || value.kind == ValueKind.NULL) {
-      return false;
-    } else {
-      return value.toBoolean();
-    }
-  }
-
-  set winnerSetOnL1(value: boolean) {
-    this.set("winnerSetOnL1", Value.fromBoolean(value));
-  }
-
   get canceledOnL1MessageHash(): string | null {
     let value = this.get("canceledOnL1MessageHash");
     if (!value || value.kind == ValueKind.NULL) {
@@ -213,6 +200,19 @@ export class L1Naffle extends Entity {
     } else {
       this.set("canceledOnL1MessageHash", Value.fromString(<string>value));
     }
+  }
+
+  get winnerSetOnL1(): boolean {
+    let value = this.get("winnerSetOnL1");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set winnerSetOnL1(value: boolean) {
+    this.set("winnerSetOnL1", Value.fromBoolean(value));
   }
 
   get winnerAddress(): Bytes | null {
@@ -297,6 +297,40 @@ export class L1Naffle extends Entity {
       this.unset("transactionHash");
     } else {
       this.set("transactionHash", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get tokenType(): string | null {
+    let value = this.get("tokenType");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set tokenType(value: string | null) {
+    if (!value) {
+      this.unset("tokenType");
+    } else {
+      this.set("tokenType", Value.fromString(<string>value));
+    }
+  }
+
+  get amount(): BigInt | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set amount(value: BigInt | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromBigInt(<BigInt>value));
     }
   }
 
