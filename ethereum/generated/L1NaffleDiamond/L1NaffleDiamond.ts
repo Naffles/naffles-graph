@@ -83,40 +83,52 @@ export class L1NaffleCreated__Params {
     this._event = event;
   }
 
+  get naffleTokenInformation(): L1NaffleCreatedNaffleTokenInformationStruct {
+    return changetype<L1NaffleCreatedNaffleTokenInformationStruct>(
+      this._event.parameters[0].value.toTuple()
+    );
+  }
+
   get naffleId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 
   get owner(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get ethTokenAddress(): Address {
     return this._event.parameters[2].value.toAddress();
   }
 
-  get nftId(): BigInt {
+  get paidTicketSpots(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get paidTicketSpots(): BigInt {
+  get ticketPriceInWei(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get ticketPriceInWei(): BigInt {
+  get endTime(): BigInt {
     return this._event.parameters[5].value.toBigInt();
   }
 
-  get endTime(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
-  }
-
   get naffleType(): i32 {
-    return this._event.parameters[7].value.toI32();
+    return this._event.parameters[6].value.toI32();
+  }
+}
+
+export class L1NaffleCreatedNaffleTokenInformationStruct extends ethereum.Tuple {
+  get tokenAddress(): Address {
+    return this[0].toAddress();
   }
 
-  get tokenContractType(): i32 {
-    return this._event.parameters[8].value.toI32();
+  get nftId(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get amount(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get naffleTokenType(): i32 {
+    return this[3].toI32();
   }
 }
 

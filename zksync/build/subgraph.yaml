@@ -26,8 +26,8 @@ dataSources:
       eventHandlers:
         - event: L2NaffleCancelled(indexed uint256,bytes32)
           handler: handleL2NaffleCancelled
-        - event: L2NaffleCreated(uint256,indexed address,indexed
-            address,uint256,uint256,uint256,uint256,uint256,indexed uint8,uint8)
+        - event: L2NaffleCreated((address,uint256,uint256,uint8),uint256,indexed
+            address,uint256,uint256,uint256,uint256,indexed uint8)
           handler: handleL2NaffleCreated
         - event: L2NaffleFinished(indexed uint256,address,uint256,bytes32)
           handler: handleL2NaffleFinished
