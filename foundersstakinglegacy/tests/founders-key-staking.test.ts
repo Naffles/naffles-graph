@@ -3,58 +3,42 @@ import {
   describe,
   test,
   clearStore,
-  beforeAll,
   afterAll
 } from "matchstick-as/assembly/index"
 import { Address, BigInt } from "@graphprotocol/graph-ts"
-import { OwnershipTransferred } from "../generated/schema"
-import { OwnershipTransferred as OwnershipTransferredEvent } from "../generated/FoundersKeyStaking/FoundersKeyStaking"
-import { handleOwnershipTransferred } from "../src/founders-key-staking"
-import { createOwnershipTransferredEvent } from "./founders-key-staking-utils"
+import { handleUserStaked, handleUserUnstaked } from "../src/founders-key-staking"
+import { createUserStakedEvent, createUserUnstakedEvent } from "./founders-key-staking-utils"
+import { logStore } from "matchstick-as/assembly/store";
 
-// Tests structure (matchstick-as >=0.5.0)
-// https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
+describe("Founder key staking", () => {
+  test("Stakes persisted", () => {
+    let userAddress = Address.fromString(
+      "0x0000000000000000000000000000000000000001"
+    );
+    let event1 = createUserStakedEvent(userAddress, 1, BigInt.fromI32(0), 0);
+    let event2 = createUserStakedEvent(userAddress, 2, BigInt.fromI32(0), 2);
+    handleUserStaked(event1);
+    handleUserStaked(event2);
 
-describe("Describe entity assertions", () => {
-  beforeAll(() => {
-    let previousOwner = Address.fromString(
+    assert.entityCount("Stake", 2);
+  })
+
+  test("Stake removed", () => {
+    let userAddress = Address.fromString(
       "0x0000000000000000000000000000000000000001"
-    )
-    let newOwner = Address.fromString(
-      "0x0000000000000000000000000000000000000001"
-    )
-    let newOwnershipTransferredEvent = createOwnershipTransferredEvent(
-      previousOwner,
-      newOwner
-    )
-    handleOwnershipTransferred(newOwnershipTransferredEvent)
+    );
+    let createEvent1 = createUserStakedEvent(userAddress, 1, BigInt.fromI32(0), 0);
+    let createEvent2 = createUserStakedEvent(userAddress, 2, BigInt.fromI32(0), 2);
+    handleUserStaked(createEvent1);
+    handleUserStaked(createEvent2);
+
+    let removeEvent = createUserUnstakedEvent(userAddress, 1, BigInt.fromI32(0));
+    handleUserUnstaked(removeEvent);
+
+    assert.entityCount("Stake", 1);
   })
 
   afterAll(() => {
     clearStore()
-  })
-
-  // For more test scenarios, see:
-  // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
-
-  test("OwnershipTransferred created and stored", () => {
-    assert.entityCount("OwnershipTransferred", 1)
-
-    // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
-    assert.fieldEquals(
-      "OwnershipTransferred",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "previousOwner",
-      "0x0000000000000000000000000000000000000001"
-    )
-    assert.fieldEquals(
-      "OwnershipTransferred",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "newOwner",
-      "0x0000000000000000000000000000000000000001"
-    )
-
-    // More assert options:
-    // https://thegraph.com/docs/en/developer/matchstick/#asserts
   })
 })

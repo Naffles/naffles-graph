@@ -14,21 +14,12 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - OwnershipTransferred
-        - Paused
-        - Unpaused
         - UserStaked
         - UserUnstaked
       abis:
         - name: FoundersKeyStaking
           file: ./abis/FoundersKeyStaking.json
       eventHandlers:
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
-        - event: Unpaused(address)
-          handler: handleUnpaused
         - event: UserStaked(address,uint16,uint256,uint8)
           handler: handleUserStaked
         - event: UserUnstaked(address,uint16,uint256)
