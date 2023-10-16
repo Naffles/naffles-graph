@@ -1,0 +1,8 @@
+{
+  "mainnet": {
+    "FoundersKeyStaking": {
+      "address": "0x0814D12dC247F299013D3781C8EAc2631C66D4d0",
+      "startBlock": 16427337
+    }
+  }
+}
