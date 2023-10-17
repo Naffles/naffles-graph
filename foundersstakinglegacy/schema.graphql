@@ -1,5 +1,5 @@
 type Stake @entity {
-  id: Bytes!
+  id: ID!
   nftId: Int! # uint16
   userAddress: Bytes! # address
   stakingPeriod: Int! # uint8
