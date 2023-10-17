@@ -5,7 +5,7 @@ import {
   clearStore,
   afterAll
 } from "matchstick-as/assembly/index"
-import { Address, BigInt } from "@graphprotocol/graph-ts"
+import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
 import { handleUserStaked, handleUserUnstaked } from "../src/founders-key-staking"
 import { createUserStakedEvent, createUserUnstakedEvent } from "./founders-key-staking-utils"
 import { logStore } from "matchstick-as/assembly/store";
@@ -21,6 +21,10 @@ describe("Founder key staking", () => {
     handleUserStaked(event2);
 
     assert.entityCount("Stake", 2);
+    assert.fieldEquals("Stake", "1", "userAddress", userAddress.toHexString())
+    assert.fieldEquals("Stake", "1", "stakingPeriod", "0")
+    assert.fieldEquals("Stake", "2", "userAddress", userAddress.toHexString())
+    assert.fieldEquals("Stake", "2", "stakingPeriod", "2")
   })
 
   test("Stake removed", () => {
@@ -36,6 +40,8 @@ describe("Founder key staking", () => {
     handleUserUnstaked(removeEvent);
 
     assert.entityCount("Stake", 1);
+    assert.fieldEquals("Stake", "2", "userAddress", userAddress.toHexString())
+    assert.fieldEquals("Stake", "2", "stakingPeriod", "2")
   })
 
   afterAll(() => {
