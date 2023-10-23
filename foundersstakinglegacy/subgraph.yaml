@@ -1,0 +1,27 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: FoundersKeyStaking
+    network: mainnet
+    source:
+      address: "0x0814D12dC247F299013D3781C8EAc2631C66D4d0"
+      abi: FoundersKeyStaking
+      startBlock: 16427337
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - UserStaked
+        - UserUnstaked
+      abis:
+        - name: FoundersKeyStaking
+          file: ./abis/FoundersKeyStaking.json
+      eventHandlers:
+        - event: UserStaked(address,uint16,uint256,uint8)
+          handler: handleUserStaked
+        - event: UserUnstaked(address,uint16,uint256)
+          handler: handleUserUnstaked
+      file: ./src/founders-key-staking.ts
