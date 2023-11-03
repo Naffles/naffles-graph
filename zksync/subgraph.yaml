@@ -4,9 +4,9 @@ schema:
 dataSources:
   - kind: ethereum
     name: L2NaffleDiamond
-    network: zkSync2-testnet
+    network: zksync-era-testnet
     source:
-      address: "0x937699440212B980CcB11654343A373E92E65408"
+      address: "0xA208166e7d927a39cD3ca183d1EC215905e61dCe"
       abi: L2NaffleDiamond
       startBlock: 10454093
     mapping:
@@ -41,9 +41,9 @@ dataSources:
       file: ./src/l-2-naffle-diamond.ts
   - kind: ethereum
     name: L2OpenEntryTicketDiamond
-    network: zkSync2-testnet
+    network: zksync-era-testnet
     source:
-      address: "0x9da5022ceCC4710C5821Da325ca5fdCE2E3B4050"
+      address: "0x63b66be8160a0f3c30174Abe635C9EF74Df19339"
       abi: L2OpenEntryTicketDiamond
       startBlock: 10823279
     mapping:
@@ -70,9 +70,9 @@ dataSources:
       file: ./src/l-2-naffle-diamond.ts
   - kind: ethereum
     name: L2PaidTicketDiamond
-    network: zkSync2-testnet
+    network: zksync-era-testnet
     source:
-      address: "0x0EC2B28584507148b4C051B6B09c686b27473751"
+      address: "0xC74c680AbBC264A1CE6A79d280245e713C27C857"
       abi: L2PaidTicketDiamond
       startBlock: 10823226
     mapping:
