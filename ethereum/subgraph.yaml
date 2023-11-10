@@ -6,7 +6,7 @@ dataSources:
     name: L1NaffleDiamond
     network: goerli
     source:
-      address: "0x1F3CBd3CE14BCc9EF668c1908Ce3e8e520b679aA"
+      address: "0xf74ca78d428525142464A892730B7c39295F5FA2"
       abi: L1NaffleDiamond
       startBlock: 9479120
     mapping:
