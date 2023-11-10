@@ -198,7 +198,7 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
     userEntity.save();
   }
 
-  for (let i = BigInt.fromI32(0); i < event.params.amount; i.plus(BigInt.fromI32(1))) {
+  for (let i = BigInt.fromI32(0); i < event.params.amount; i = i.plus(BigInt.fromI32(1))) {
       let ticketId = event.params.startingTicketId.plus(i);
       let entity = new PaidTicket(
         Bytes.fromByteArray(Bytes.fromBigInt(ticketId))
