@@ -43,7 +43,7 @@ dataSources:
     name: L2OpenEntryTicketDiamond
     network: zksync-era-testnet
     source:
-      address: "0x310Cc6238bfcf65Eb5633eFc0cFF1a2828131f74"
+      address: "0x868AD83f5AbB30825826B829Dcf14c7C5B43d221"
       abi: L2OpenEntryTicketDiamond
       startBlock: 10823279
     mapping:
