@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0xcA7f23BF380d72bCB00EC768e0E30Af5C858Bc39"
       abi: L2NaffleDiamond
-      startBlock: 14421313
+      startBlock: 14468810
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
