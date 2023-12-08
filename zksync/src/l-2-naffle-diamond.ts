@@ -24,6 +24,7 @@ import {
   Collection,
   PaidTicket,
   OpenEntryTicket,
+  TotalTicketCount,
 } from "../generated/schema";
 import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 
@@ -198,22 +199,30 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
     userEntity.save();
   }
 
+  let ticketCount = TotalTicketCount.load(Bytes.fromUTF8("totalTicketCount"));
+  if (ticketCount == null) {
+    ticketCount = new TotalTicketCount(Bytes.fromUTF8("totalTicketCount"));
+    ticketCount.count = BigInt.fromI32(0);
+    ticketCount.save();
+  }
+
   for (let i = BigInt.fromI32(0); i < event.params.amount; i = i.plus(BigInt.fromI32(1))) {
       let ticketId = event.params.startingTicketId.plus(i);
-      let entity = new PaidTicket(
-        Bytes.fromByteArray(Bytes.fromBigInt(ticketId))
-      );
+      let uniqueTicketId = event.params.naffleId.toString() + "-" + event.params.startingTicketId.plus(i).toString();
+      let entity = new PaidTicket(Bytes.fromByteArray(Bytes.fromUTF8(uniqueTicketId)));
       entity.naffle = Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
       entity.owner = userEntity.id;
       entity.timestampLastUpdate = event.block.timestamp;
       entity.blocknumberLastUpdate = event.block.number;
       entity.transactionHash = event.transaction.hash;
-      entity.ticketIdOnContract = ticketId;
-      entity.ticketIdOnNaffle = event.params.startingTicketId.plus(i);
+      entity.ticketIdOnNaffle = ticketId;
+      entity.ticketIdOnContract = ticketCount.count.plus(i).plus(BigInt.fromI32(1));
       entity.redeemed = false;
       entity.refunded = false;
       entity.save();
     }
+    ticketCount.count = ticketCount.count.plus(event.params.amount);
+    ticketCount.save();
 }
 
 export function handlePaidTicketsRefundedAndBurned(

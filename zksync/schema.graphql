@@ -38,6 +38,11 @@ enum TokenType {
   ERC20
 }
 
+type TotalTicketCount @entity {
+  id: Bytes!
+  count: BigInt!
+}
+
 type L2Naffle @entity {
   id: Bytes!
   collection: Collection
