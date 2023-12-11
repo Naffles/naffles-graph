@@ -26,7 +26,7 @@ import {
   OpenEntryTicket,
   TotalTicketCount,
 } from "../generated/schema";
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
+import {Address, BigInt, Bytes} from "@graphprotocol/graph-ts";
 
 export function handleL2NaffleCancelled(event: L2NaffleCancelledEvent): void {
   let entity = L2Naffle.load(
@@ -184,7 +184,6 @@ export function handleTicketsDetachedFromNaffle(
             entity.transactionHash = event.transaction.hash;
             entity.ticketIdOnNaffle = null;
             entity.naffle = null;
-            entity.naffleId = null;
             entity.save();
         }
     }
@@ -315,7 +314,7 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
     fromUserEntity.save();
   }
 
-  if (event.params.to.toString() == "0x0000000000000000000000000000000000000000") {
+  if (event.params.to == Address.zero()) {
     // this is a refund or burn, so we don't need to do anything because this is handled in the respective events
     return
   }
@@ -378,7 +377,7 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
     fromUserEntity.save();
   }
 
-  if (event.params.to.toString() == "0x0000000000000000000000000000000000000000") {
+  if (event.params.to == Address.zero()) {
     // this is a refund or burn, so we don't need to do anything because this is handled in the respective events
     return
   }
