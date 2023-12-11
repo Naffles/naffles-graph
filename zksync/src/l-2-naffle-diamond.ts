@@ -175,7 +175,7 @@ export function handleTicketsDetachedFromNaffle(
 ): void {
   for (let i = 0; i < event.params.ticketIds.length; i++) {
         let entity = OpenEntryTicket.load(
-        Bytes.fromByteArray(Bytes.fromBigInt(event.params.ticketIds[i]))
+          Bytes.fromByteArray(Bytes.fromBigInt(event.params.ticketIds[i]))
         );
 
         if (entity != null) {
@@ -183,6 +183,8 @@ export function handleTicketsDetachedFromNaffle(
             entity.blocknumberLastUpdate = event.block.number;
             entity.transactionHash = event.transaction.hash;
             entity.ticketIdOnNaffle = null;
+            entity.naffle = null;
+            entity.naffleId = null;
             entity.save();
         }
     }
@@ -241,7 +243,7 @@ export function handlePaidTicketsRefundedAndBurned(
   if (tickets == null) {
     return;
   }
-  // the amount in paidTicketsRefundedAndBurned is always the total amount of tickets a user has.
+  // the amount in paidTicketsRefundedAndBurned is always the total amount of tickets a user has for a specific nafflle.
   // so we can just loop through all the user tickets and mark them as refunded for a specific naffle
   for (let i = 0; i < tickets.length; i++) {
         let entity: PaidTicket = tickets[i];
@@ -313,6 +315,11 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
     fromUserEntity.save();
   }
 
+  if (event.params.to.toString() == "0x0000000000000000000000000000000000000000") {
+    // this is a refund or burn, so we don't need to do anything because this is handled in the respective events
+    return
+  }
+
   let toUserEntity = L2User.load(event.params.to);
   if (toUserEntity == null) {
     toUserEntity = new L2User(event.params.to);
@@ -371,7 +378,14 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
     fromUserEntity.save();
   }
 
+  if (event.params.to.toString() == "0x0000000000000000000000000000000000000000") {
+    // this is a refund or burn, so we don't need to do anything because this is handled in the respective events
+    return
+  }
+
   let toUserEntity = L2User.load(event.params.to);
+
+
   if (toUserEntity == null) {
     toUserEntity = new L2User(event.params.to);
     toUserEntity.address = event.params.to;
