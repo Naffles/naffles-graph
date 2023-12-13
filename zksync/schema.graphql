@@ -18,6 +18,7 @@ type L2User @entity {
   address: Bytes!
   naffles: [L2Naffle!]! @derivedFrom(field: "owner")
   paidTickets: [PaidTicket!]! @derivedFrom(field: "owner")
+  openEntryTicketsClaimedFromStaking: BigInt 
   timestampLastUpdate: BigInt
   blocknumberLastUpdate: BigInt
   transactionHash: Bytes

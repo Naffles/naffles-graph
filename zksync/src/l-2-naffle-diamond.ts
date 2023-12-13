@@ -14,6 +14,7 @@ import {
   TransferBatch as TransferBatchEvent,
 } from "../generated/L2PaidTicketDiamond/L2PaidTicketDiamond";
 import {
+    StakingRewardsClaimed,
   TicketsAttachedToNaffle as TicketsAttachedToNaffleEvent,
   TicketsDetachedFromNaffle as TicketsDetachedFromNaffleEvent,
   Transfer as TransferEvent,
@@ -75,6 +76,7 @@ export function handleL2NaffleCreated(event: L2NaffleCreatedEvent): void {
     userEntity.timestampLastUpdate = event.block.timestamp;
     userEntity.blocknumberLastUpdate = event.block.number;
     userEntity.transactionHash = event.transaction.hash;
+    userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     userEntity.save();
   }
   entity.owner = userEntity.id;
@@ -189,6 +191,27 @@ export function handleTicketsDetachedFromNaffle(
     }
 }
 
+
+export function handleStakingRewardsClaimed(
+    event: StakingRewardsClaimed 
+): void {
+    let userEntity = L2User.load(event.params.to);
+    if (userEntity == null) {
+        userEntity = new L2User(event.params.to);
+        userEntity.address = event.params.to;
+        userEntity.timestampLastUpdate = event.block.timestamp;
+        userEntity.blocknumberLastUpdate = event.block.number;
+        userEntity.transactionHash = event.transaction.hash;
+        userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
+        userEntity.save();
+    }
+    if (userEntity.openEntryTicketsClaimedFromStaking == null) {
+        userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
+    }
+    userEntity.openEntryTicketsClaimedFromStaking = userEntity.openEntryTicketsClaimedFromStaking.plus(event.params.amount);
+    userEntity.save();
+}
+
 export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
   let userEntity = L2User.load(event.params.owner);
   if (userEntity == null) {
@@ -197,6 +220,7 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
     userEntity.timestampLastUpdate = event.block.timestamp;
     userEntity.blocknumberLastUpdate = event.block.number;
     userEntity.transactionHash = event.transaction.hash;
+    userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     userEntity.save();
   }
 
@@ -232,6 +256,7 @@ export function handlePaidTicketsRefundedAndBurned(
   let userEntity = L2User.load(event.params.owner);
   if (userEntity == null) {
     userEntity = new L2User(event.params.owner);
+    userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     userEntity.address = event.params.owner;
     userEntity.timestampLastUpdate = event.block.timestamp;
     userEntity.blocknumberLastUpdate = event.block.number;
@@ -286,6 +311,7 @@ export function handleTransferOpenEntry(event: TransferEvent): void {
 
   if (userEntity == null) {
     userEntity = new L2User(event.params.to);
+    userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     userEntity.address = event.params.to;
     userEntity.timestampLastUpdate = event.block.timestamp;
     userEntity.blocknumberLastUpdate = event.block.number;

@@ -67,6 +67,8 @@ dataSources:
           handler: handleTicketsDetachedFromNaffle
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransferOpenEntry
+        - event: StakingRewardsClaimed(indexed address,uint256)
+          handler: handleStakingRewardsClaimed
       file: ./src/l-2-naffle-diamond.ts
   - kind: ethereum
     name: L2PaidTicketDiamond
