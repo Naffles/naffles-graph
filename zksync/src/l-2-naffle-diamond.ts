@@ -205,9 +205,7 @@ export function handleStakingRewardsClaimed(
         userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
         userEntity.save();
     }
-    if (userEntity.openEntryTicketsClaimedFromStaking == null) {
-        userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
-    }
+
     userEntity.openEntryTicketsClaimedFromStaking = userEntity.openEntryTicketsClaimedFromStaking.plus(event.params.amount);
     userEntity.save();
 }
