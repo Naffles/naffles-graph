@@ -43,7 +43,13 @@ describe("Founder key staking", () => {
     assert.fieldEquals("Stake", "2", "userAddress", userAddress.toHexString())
     assert.fieldEquals("Stake", "2", "stakingPeriod", "2")
   })
+  afterAll(() => {
+    clearStore()
+  })
 
+});
+
+describe("Staking history", () => {
   test("Multiple stakes and unstake for the same NFT", () => {
     let userAddress = Address.fromString(
       "0x0000000000000000000000000000000000000001"
@@ -67,9 +73,8 @@ describe("Founder key staking", () => {
     assert.entityCount("StakeSession", 2)
     id = "0x0000000000000000000000000000000000000001-2-" + createEvent1.block.timestamp.toString()
     assert.fieldEquals("StakeSession", "2", "unstakedAt", "null")
-  });
-
+  }); 
   afterAll(() => {
     clearStore()
   })
-})
+});

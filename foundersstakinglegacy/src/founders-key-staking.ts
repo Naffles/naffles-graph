@@ -49,10 +49,8 @@ export function handleUserUnstaked(event: UserUnstakedEvent): void {
   if (stakeSession== null) {
     return;
   }
-  if (stakeSession && stakeSession.unstakedAt === null) {
+  if (stakeSession.unstakedAt === null) {
     stakeSession.unstakedAt = event.block.timestamp;
     stakeSession.save();
-  } else {
-    console.log("stake session that should have no unstaked but does is " + lastId);
-  }
+  } 
 }
