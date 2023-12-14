@@ -44,6 +44,31 @@ describe("Founder key staking", () => {
     assert.fieldEquals("Stake", "2", "stakingPeriod", "2")
   })
 
+  test("Multiple stakes and unstake for the same NFT", () => {
+    let userAddress = Address.fromString(
+      "0x0000000000000000000000000000000000000001"
+    );
+    let createEvent1 = createUserStakedEvent(userAddress, 1, BigInt.fromI32(0), 0);
+    handleUserStaked(createEvent1);
+    // unstake event for the same NFT
+    let removeEvent1 = createUserUnstakedEvent(userAddress, 1, BigInt.fromI32(0));
+    handleUserUnstaked(removeEvent1);
+    // validate that the stakeHistory has been updated with an unstakedAt timestamp
+    assert.entityCount("StakeHistory", 1);
+    assert.entityCount("StakeSession", 1)
+    let id = "0x0000000000000000000000000000000000000001-1-" + createEvent1.block.timestamp.toString()
+    assert.fieldEquals("StakeSession", id, "unstakedAt", removeEvent1.block.timestamp.toString())
+
+    // stake the same NFT again
+    let createEvent2 = createUserStakedEvent(userAddress, 1, BigInt.fromI32(0), 0);
+    handleUserStaked(createEvent2);
+
+    // test if a new StakeSession has been created
+    assert.entityCount("StakeSession", 2)
+    id = "0x0000000000000000000000000000000000000001-2-" + createEvent1.block.timestamp.toString()
+    assert.fieldEquals("StakeSession", "2", "unstakedAt", "null")
+  });
+
   afterAll(() => {
     clearStore()
   })
