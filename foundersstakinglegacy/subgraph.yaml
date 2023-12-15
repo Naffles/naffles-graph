@@ -21,9 +21,9 @@ dataSources:
           file: ./abis/FoundersKeyStaking.json
       eventHandlers:
         - event: UserStaked(address,uint16,uint256,uint8)
-          handler: handleUserStaked
+          handler: handleUserStakedLegacy
         - event: UserUnstaked(address,uint16,uint256)
-          handler: handleUserUnstaked
+          handler: handleUserUnstakedLegacy
       file: ./src/founders-key-staking.ts
   - kind: ethereum
     name: FoundersKeyStakingNew
