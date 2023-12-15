@@ -26,11 +26,11 @@ dataSources:
           handler: handleUserUnstaked
       file: ./src/founders-key-staking.ts
   - kind: ethereum
-    name: FoundersKeyStaking
+    name: FoundersKeyStakingNew
     network: mainnet
     source:
       address: "0xc9e2a832fD7E2173534Cf7A387bEE65BC29aAd08"
-      abi: FoundersKeyStaking
+      abi: FoundersKeyStakingNew
       startBlock: 16427337
     mapping:
       kind: ethereum/events
@@ -40,8 +40,8 @@ dataSources:
         - UserStaked
         - UserUnstaked
       abis:
-        - name: FoundersKeyStaking
-          file: ./abis/FoundersKeyStaking.json
+        - name: FoundersKeyStakingNew
+          file: ./abis/FoundersKeyStakingNew.json
       eventHandlers:
         - event: UserStaked(address,uint16,uint256,uint8)
           handler: handleUserStaked
