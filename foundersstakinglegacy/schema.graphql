@@ -4,3 +4,19 @@ type Stake @entity {
   userAddress: Bytes! # address
   stakingPeriod: Int! # uint8
 }
+
+type StakeHistory @entity {
+  id: ID!
+  staker: Bytes! # address
+  nftId: Int! # uint16
+  stakeSessions: [StakeSession!]! @derivedFrom(field: "stakeHistory")
+  stakeSessionIds: [ID!]! 
+}
+
+type StakeSession @entity {
+  id: ID!
+  stakeHistory: StakeHistory!
+  stakedAt: BigInt!
+  unstakedAt: BigInt 
+  stakingPeriod: Int! # uint8
+}
