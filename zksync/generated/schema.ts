@@ -85,6 +85,19 @@ export class L2User extends Entity {
     );
   }
 
+  get openEntryTicketsClaimedFromStaking(): BigInt {
+    let value = this.get("openEntryTicketsClaimedFromStaking");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set openEntryTicketsClaimedFromStaking(value: BigInt) {
+    this.set("openEntryTicketsClaimedFromStaking", Value.fromBigInt(value));
+  }
+
   get timestampLastUpdate(): BigInt | null {
     let value = this.get("timestampLastUpdate");
     if (!value || value.kind == ValueKind.NULL) {
