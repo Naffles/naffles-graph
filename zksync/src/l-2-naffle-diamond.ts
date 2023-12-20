@@ -14,6 +14,7 @@ import {
   TransferBatch as TransferBatchEvent,
 } from "../generated/L2PaidTicketDiamond/L2PaidTicketDiamond";
 import {
+    StakingRewardsClaimed,
   TicketsAttachedToNaffle as TicketsAttachedToNaffleEvent,
   TicketsDetachedFromNaffle as TicketsDetachedFromNaffleEvent,
   Transfer as TransferEvent,
