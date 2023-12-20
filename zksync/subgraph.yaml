@@ -6,7 +6,7 @@ dataSources:
     name: L2NaffleDiamond
     network: zksync-era-testnet
     source:
-      address: "0xCE1f5b778bf72EA115c61f4E2F5e2658a4d554AC"
+      address: "0x8176e577385319dd4B9c41d1083179602E1Ed23A"
       abi: L2NaffleDiamond
       startBlock: 14421313
     mapping:
@@ -43,7 +43,7 @@ dataSources:
     name: L2OpenEntryTicketDiamond
     network: zksync-era-testnet
     source:
-      address: "0x7CE8883e7CE16b6A13d6094dB158fDfc0064f0D9"
+      address: "0x5924E71CD2AF79A324d8FdD025D4054048D35889"
       abi: L2OpenEntryTicketDiamond
       startBlock: 14421219
     mapping:
@@ -72,7 +72,7 @@ dataSources:
     name: L2PaidTicketDiamond
     network: zksync-era-testnet
     source:
-      address: "0xa02997d3D981c8813b37B1C9EE4dbCC1Da0f9359"
+      address: "0x70b78F8Ef774d2f8b2907840767C704915b6C194"
       abi: L2PaidTicketDiamond
       startBlock: 14421129
     mapping:
