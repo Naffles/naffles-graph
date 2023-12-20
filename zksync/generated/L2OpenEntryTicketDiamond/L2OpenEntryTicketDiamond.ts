@@ -204,6 +204,28 @@ export class RoleRevoked__Params {
   }
 }
 
+export class StakingRewardsClaimed extends ethereum.Event {
+  get params(): StakingRewardsClaimed__Params {
+    return new StakingRewardsClaimed__Params(this);
+  }
+}
+
+export class StakingRewardsClaimed__Params {
+  _event: StakingRewardsClaimed;
+
+  constructor(event: StakingRewardsClaimed) {
+    this._event = event;
+  }
+
+  get to(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
 export class TicketsAttachedToNaffle extends ethereum.Event {
   get params(): TicketsAttachedToNaffle__Params {
     return new TicketsAttachedToNaffle__Params(this);
@@ -531,6 +553,10 @@ export class ConstructorCall__Inputs {
 
   get _admin(): Address {
     return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _domainName(): string {
+    return this._call.inputValues[1].value.toString();
   }
 }
 

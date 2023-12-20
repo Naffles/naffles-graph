@@ -26,7 +26,7 @@ import {
   OpenEntryTicket,
   TotalTicketCount,
 } from "../generated/schema";
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes, Address} from "@graphprotocol/graph-ts";
 
 export function handleL2NaffleCancelled(event: L2NaffleCancelledEvent): void {
   let entity = L2Naffle.load(
@@ -75,6 +75,7 @@ export function handleL2NaffleCreated(event: L2NaffleCreatedEvent): void {
     userEntity.timestampLastUpdate = event.block.timestamp;
     userEntity.blocknumberLastUpdate = event.block.number;
     userEntity.transactionHash = event.transaction.hash;
+    userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     userEntity.save();
   }
   entity.owner = userEntity.id;
@@ -183,9 +184,28 @@ export function handleTicketsDetachedFromNaffle(
             entity.blocknumberLastUpdate = event.block.number;
             entity.transactionHash = event.transaction.hash;
             entity.ticketIdOnNaffle = null;
+            entity.naffle = null;
             entity.save();
         }
     }
+}
+
+export function handleStakingRewardsClaimed(
+    event: StakingRewardsClaimed 
+): void {
+    let userEntity = L2User.load(event.params.to);
+    if (userEntity == null) {
+        userEntity = new L2User(event.params.to);
+        userEntity.address = event.params.to;
+        userEntity.timestampLastUpdate = event.block.timestamp;
+        userEntity.blocknumberLastUpdate = event.block.number;
+        userEntity.transactionHash = event.transaction.hash;
+        userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
+        userEntity.save();
+    }
+
+    userEntity.openEntryTicketsClaimedFromStaking = userEntity.openEntryTicketsClaimedFromStaking.plus(event.params.amount);
+    userEntity.save();
 }
 
 export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
@@ -196,6 +216,7 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
     userEntity.timestampLastUpdate = event.block.timestamp;
     userEntity.blocknumberLastUpdate = event.block.number;
     userEntity.transactionHash = event.transaction.hash;
+    userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     userEntity.save();
   }
 
@@ -235,6 +256,7 @@ export function handlePaidTicketsRefundedAndBurned(
     userEntity.timestampLastUpdate = event.block.timestamp;
     userEntity.blocknumberLastUpdate = event.block.number;
     userEntity.transactionHash = event.transaction.hash;
+    userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     userEntity.save();
   }
   let tickets = userEntity.paidTickets.load();
@@ -286,6 +308,7 @@ export function handleTransferOpenEntry(event: TransferEvent): void {
   if (userEntity == null) {
     userEntity = new L2User(event.params.to);
     userEntity.address = event.params.to;
+    userEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     userEntity.timestampLastUpdate = event.block.timestamp;
     userEntity.blocknumberLastUpdate = event.block.number;
     userEntity.transactionHash = event.transaction.hash;
@@ -310,7 +333,13 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
     fromUserEntity.timestampLastUpdate = event.block.timestamp;
     fromUserEntity.blocknumberLastUpdate = event.block.number;
     fromUserEntity.transactionHash = event.transaction.hash;
+    fromUserEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     fromUserEntity.save();
+  }
+
+  if (event.params.to == Address.zero()) {
+    // this is a refund or burn, so we don't need to do anything because this is handled in the respective events
+    return
   }
 
   let toUserEntity = L2User.load(event.params.to);
@@ -320,6 +349,7 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
     toUserEntity.timestampLastUpdate = event.block.timestamp;
     toUserEntity.blocknumberLastUpdate = event.block.number;
     toUserEntity.transactionHash = event.transaction.hash;
+    toUserEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     toUserEntity.save();
   }
 
@@ -368,7 +398,12 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
     fromUserEntity.timestampLastUpdate = event.block.timestamp;
     fromUserEntity.blocknumberLastUpdate = event.block.number;
     fromUserEntity.transactionHash = event.transaction.hash;
+    fromUserEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     fromUserEntity.save();
+  }
+  if (event.params.to == Address.zero()) {
+    // this is a refund or burn, so we don't need to do anything because this is handled in the respective events
+    return
   }
 
   let toUserEntity = L2User.load(event.params.to);
@@ -378,6 +413,7 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
     toUserEntity.timestampLastUpdate = event.block.timestamp;
     toUserEntity.blocknumberLastUpdate = event.block.number;
     toUserEntity.transactionHash = event.transaction.hash;
+    toUserEntity.openEntryTicketsClaimedFromStaking = BigInt.fromI32(0);
     toUserEntity.save();
   }
 
