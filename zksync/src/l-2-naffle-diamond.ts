@@ -205,6 +205,10 @@ export function handleStakingRewardsClaimed(
         userEntity.save();
     }
 
+    userEntity.timestampLastUpdate = event.block.timestamp;
+    userEntity.blocknumberLastUpdate = event.block.number;
+    userEntity.transactionHash = event.transaction.hash;
+
     userEntity.openEntryTicketsClaimedFromStaking = userEntity.openEntryTicketsClaimedFromStaking.plus(event.params.amount);
     userEntity.save();
 }
