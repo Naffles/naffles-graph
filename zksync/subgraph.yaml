@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0x364C719e2d7221F74df4fD4C190a481e217E5d51"
       abi: L2NaffleDiamond
-      startBlock: 14421313
+      startBlock: 15046121
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -45,7 +45,7 @@ dataSources:
     source:
       address: "0xdaAc5C7E64Af60b98B23B4C3F90EBE5aC1CBAC7a"
       abi: L2OpenEntryTicketDiamond
-      startBlock: 14421219
+      startBlock: 15046038
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -74,7 +74,7 @@ dataSources:
     source:
       address: "0x7861d15971c60937C31bC1f2222C9dF339894C3b"
       abi: L2PaidTicketDiamond
-      startBlock: 14421129
+      startBlock: 15045955
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
