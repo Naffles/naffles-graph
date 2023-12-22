@@ -11,13 +11,13 @@ import {
   createL1NaffleCancelledEvent,
   createL1NaffleWinnerSetEvent,
   createChainlinkRequestFulfilledEvent,
-} from "./l-1-naffle-diamond-utils";
+} from "./l-1-naffle-DAIMOND-utils";
 import { L1Naffle } from "../generated/schema";
 import {
   handleL1NaffleCancelled,
   handleL1NaffleCreated,
   handleL1NaffleWinnerSet,
-} from "../src/l-1-naffle-diamond";
+} from "../src/l-1-naffle-DAIMOND";
 import { logStore } from "matchstick-as/assembly/store";
 
 describe("L1Naffle", () => {

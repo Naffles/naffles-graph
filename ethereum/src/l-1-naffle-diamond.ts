@@ -2,7 +2,7 @@ import {
   L1NaffleCancelled as L1NaffleCancelledEvent,
   L1NaffleCreated as L1NaffleCreatedEvent,
   L1NaffleWinnerSet as L1NaffleWinnerSetEvent,
-} from "../generated/L1NaffleDiamond/L1NaffleDiamond";
+} from "../generated/L1NaffleDAIMOND/L1NaffleDAIMOND";
 
 import { Collection, L1Naffle, L1User } from "../generated/schema";
 import { Bytes } from "@graphprotocol/graph-ts";

@@ -1,13 +1,13 @@
 {
-  "name": "l2diamondtest",
+  "name": "l2DAIMONDtest",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ l2diamondtest",
-    "create-local": "graph create --node http://localhost:8020/ l2diamondtest",
-    "remove-local": "graph remove --node http://localhost:8020/ l2diamondtest",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 l2diamondtest",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ l2DAIMONDtest",
+    "create-local": "graph create --node http://localhost:8020/ l2DAIMONDtest",
+    "remove-local": "graph remove --node http://localhost:8020/ l2DAIMONDtest",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 l2DAIMONDtest",
     "test": "graph test"
   },
   "dependencies": {

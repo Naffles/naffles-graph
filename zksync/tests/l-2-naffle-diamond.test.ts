@@ -20,7 +20,7 @@ import {
   createPaidTicketsMintedEvent,
   createPaidTicketsRefundedAndBurnedEvent,
   createTransferEvent,
-} from "./l-2-naffle-diamond-utils";
+} from "./l-2-naffle-DAIMOND-utils";
 import {
   handleL2NaffleCancelled,
   handleL2NaffleCreated,
@@ -31,7 +31,7 @@ import {
   handleTicketsAttachedToNaffle,
   handleTicketsDetachedFromNaffle,
   handleTransfer,
-} from "../src/l-2-naffle-diamond";
+} from "../src/l-2-naffle-DAIMOND";
 
 describe("L2Naffle", () => {
   afterAll(() => {

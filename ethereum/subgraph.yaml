@@ -3,11 +3,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: L1NaffleDiamond
+    name: L1NaffleDAIMOND
     network: goerli
     source:
       address: "0x56A05Ad34200dD84a9f19243346958F75bd9177B"
-      abi: L1NaffleDiamond
+      abi: L1NaffleDAIMOND
       startBlock: 9479120
     mapping:
       kind: ethereum/events
@@ -18,8 +18,8 @@ dataSources:
         - Collection
         - L1User
       abis:
-        - name: L1NaffleDiamond
-          file: ./abis/L1NaffleDiamond.json
+        - name: L1NaffleDAIMOND
+          file: ./abis/L1NaffleDAIMOND.json
       eventHandlers:
         - event: L1NaffleCancelled(uint256)
           handler: handleL1NaffleCancelled
@@ -27,4 +27,4 @@ dataSources:
           handler: handleL1NaffleCreated
         - event: L1NaffleWinnerSet(indexed uint256,indexed address)
           handler: handleL1NaffleWinnerSet
-      file: ./src/l-1-naffle-diamond.ts
+      file: ./src/l-1-naffle-DAIMOND.ts

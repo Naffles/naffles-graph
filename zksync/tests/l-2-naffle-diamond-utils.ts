@@ -11,18 +11,18 @@ import {
   RoleGranted,
   RoleRevoked,
   TicketsBought,
-} from "../generated/L2NaffleDiamond/L2NaffleDiamond";
+} from "../generated/L2NaffleDAIMOND/L2NaffleDAIMOND";
 
 import {
   TicketsAttachedToNaffle,
   TicketsDetachedFromNaffle,
   Transfer,
-} from "../generated/L2OpenEntryTicketDiamond/L2OpenEntryTicketDiamond";
+} from "../generated/L2OpenEntryTicketDAIMOND/L2OpenEntryTicketDAIMOND";
 
 import {
   PaidTicketsMinted,
   PaidTicketsRefundedAndBurned,
-} from "../generated/L2PaidTicketDiamond/L2PaidTicketDiamond";
+} from "../generated/L2PaidTicketDAIMOND/L2PaidTicketDAIMOND";
 
 export function createL2NaffleCancelledEvent(
   naffleId: BigInt,

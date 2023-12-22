@@ -10,22 +10,22 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class DiamondCut extends ethereum.Event {
-  get params(): DiamondCut__Params {
-    return new DiamondCut__Params(this);
+export class DAIMONDCut extends ethereum.Event {
+  get params(): DAIMONDCut__Params {
+    return new DAIMONDCut__Params(this);
   }
 }
 
-export class DiamondCut__Params {
-  _event: DiamondCut;
+export class DAIMONDCut__Params {
+  _event: DAIMONDCut;
 
-  constructor(event: DiamondCut) {
+  constructor(event: DAIMONDCut) {
     this._event = event;
   }
 
-  get facetCuts(): Array<DiamondCutFacetCutsStruct> {
+  get facetCuts(): Array<DAIMONDCutFacetCutsStruct> {
     return this._event.parameters[0].value.toTupleArray<
-      DiamondCutFacetCutsStruct
+      DAIMONDCutFacetCutsStruct
     >();
   }
 
@@ -38,7 +38,7 @@ export class DiamondCut__Params {
   }
 }
 
-export class DiamondCutFacetCutsStruct extends ethereum.Tuple {
+export class DAIMONDCutFacetCutsStruct extends ethereum.Tuple {
   get target(): Address {
     return this[0].toAddress();
   }
@@ -370,7 +370,7 @@ export class TicketsBought__Params {
   }
 }
 
-export class L2NaffleDiamond__facetsResultDiamondFacetsStruct extends ethereum.Tuple {
+export class L2NaffleDAIMOND__facetsResultDAIMONDFacetsStruct extends ethereum.Tuple {
   get target(): Address {
     return this[0].toAddress();
   }
@@ -380,9 +380,9 @@ export class L2NaffleDiamond__facetsResultDiamondFacetsStruct extends ethereum.T
   }
 }
 
-export class L2NaffleDiamond extends ethereum.SmartContract {
-  static bind(address: Address): L2NaffleDiamond {
-    return new L2NaffleDiamond("L2NaffleDiamond", address);
+export class L2NaffleDAIMOND extends ethereum.SmartContract {
+  static bind(address: Address): L2NaffleDAIMOND {
+    return new L2NaffleDAIMOND("L2NaffleDAIMOND", address);
   }
 
   facetAddress(selector: Bytes): Address {
@@ -454,16 +454,16 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBytesArray());
   }
 
-  facets(): Array<L2NaffleDiamond__facetsResultDiamondFacetsStruct> {
+  facets(): Array<L2NaffleDAIMOND__facetsResultDAIMONDFacetsStruct> {
     let result = super.call("facets", "facets():((address,bytes4[])[])", []);
 
     return result[0].toTupleArray<
-      L2NaffleDiamond__facetsResultDiamondFacetsStruct
+      L2NaffleDAIMOND__facetsResultDAIMONDFacetsStruct
     >();
   }
 
   try_facets(): ethereum.CallResult<
-    Array<L2NaffleDiamond__facetsResultDiamondFacetsStruct>
+    Array<L2NaffleDAIMOND__facetsResultDAIMONDFacetsStruct>
   > {
     let result = super.tryCall("facets", "facets():((address,bytes4[])[])", []);
     if (result.reverted) {
@@ -471,7 +471,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      value[0].toTupleArray<L2NaffleDiamond__facetsResultDiamondFacetsStruct>()
+      value[0].toTupleArray<L2NaffleDAIMOND__facetsResultDAIMONDFacetsStruct>()
     );
   }
 
@@ -700,26 +700,26 @@ export class AcceptOwnershipCall__Outputs {
   }
 }
 
-export class DiamondCutCall extends ethereum.Call {
-  get inputs(): DiamondCutCall__Inputs {
-    return new DiamondCutCall__Inputs(this);
+export class DAIMONDCutCall extends ethereum.Call {
+  get inputs(): DAIMONDCutCall__Inputs {
+    return new DAIMONDCutCall__Inputs(this);
   }
 
-  get outputs(): DiamondCutCall__Outputs {
-    return new DiamondCutCall__Outputs(this);
+  get outputs(): DAIMONDCutCall__Outputs {
+    return new DAIMONDCutCall__Outputs(this);
   }
 }
 
-export class DiamondCutCall__Inputs {
-  _call: DiamondCutCall;
+export class DAIMONDCutCall__Inputs {
+  _call: DAIMONDCutCall;
 
-  constructor(call: DiamondCutCall) {
+  constructor(call: DAIMONDCutCall) {
     this._call = call;
   }
 
-  get facetCuts(): Array<DiamondCutCallFacetCutsStruct> {
+  get facetCuts(): Array<DAIMONDCutCallFacetCutsStruct> {
     return this._call.inputValues[0].value.toTupleArray<
-      DiamondCutCallFacetCutsStruct
+      DAIMONDCutCallFacetCutsStruct
     >();
   }
 
@@ -732,15 +732,15 @@ export class DiamondCutCall__Inputs {
   }
 }
 
-export class DiamondCutCall__Outputs {
-  _call: DiamondCutCall;
+export class DAIMONDCutCall__Outputs {
+  _call: DAIMONDCutCall;
 
-  constructor(call: DiamondCutCall) {
+  constructor(call: DAIMONDCutCall) {
     this._call = call;
   }
 }
 
-export class DiamondCutCallFacetCutsStruct extends ethereum.Tuple {
+export class DAIMONDCutCallFacetCutsStruct extends ethereum.Tuple {
   get target(): Address {
     return this[0].toAddress();
   }

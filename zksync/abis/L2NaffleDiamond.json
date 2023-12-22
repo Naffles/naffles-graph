@@ -1,7 +1,7 @@
 {
   "_format": "hh-zksolc-artifact-1",
-  "contractName": "L2NaffleDiamond",
-  "sourceName": "contracts/naffle/zksync/L2NaffleDiamond.sol",
+  "contractName": "L2NaffleDAIMOND",
+  "sourceName": "contracts/naffle/zksync/L2NaffleDAIMOND.sol",
   "abi": [
     {
       "inputs": [
@@ -46,42 +46,42 @@
     },
     {
       "inputs": [],
-      "name": "DiamondWritable__InvalidInitializationParameters",
+      "name": "DAIMONDWritable__InvalidInitializationParameters",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DiamondWritable__RemoveTargetNotZeroAddress",
+      "name": "DAIMONDWritable__RemoveTargetNotZeroAddress",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DiamondWritable__ReplaceTargetIsIdentical",
+      "name": "DAIMONDWritable__ReplaceTargetIsIdentical",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DiamondWritable__SelectorAlreadyAdded",
+      "name": "DAIMONDWritable__SelectorAlreadyAdded",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DiamondWritable__SelectorIsImmutable",
+      "name": "DAIMONDWritable__SelectorIsImmutable",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DiamondWritable__SelectorNotFound",
+      "name": "DAIMONDWritable__SelectorNotFound",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DiamondWritable__SelectorNotSpecified",
+      "name": "DAIMONDWritable__SelectorNotSpecified",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DiamondWritable__TargetHasNoCode",
+      "name": "DAIMONDWritable__TargetHasNoCode",
       "type": "error"
     },
     {
@@ -270,7 +270,7 @@
               "type": "address"
             },
             {
-              "internalType": "enum IDiamondWritableInternal.FacetCutAction",
+              "internalType": "enum IDAIMONDWritableInternal.FacetCutAction",
               "name": "action",
               "type": "uint8"
             },
@@ -281,7 +281,7 @@
             }
           ],
           "indexed": false,
-          "internalType": "struct IDiamondWritableInternal.FacetCut[]",
+          "internalType": "struct IDAIMONDWritableInternal.FacetCut[]",
           "name": "facetCuts",
           "type": "tuple[]"
         },
@@ -298,7 +298,7 @@
           "type": "bytes"
         }
       ],
-      "name": "DiamondCut",
+      "name": "DAIMONDCut",
       "type": "event"
     },
     {
@@ -637,7 +637,7 @@
               "type": "address"
             },
             {
-              "internalType": "enum IDiamondWritableInternal.FacetCutAction",
+              "internalType": "enum IDAIMONDWritableInternal.FacetCutAction",
               "name": "action",
               "type": "uint8"
             },
@@ -647,7 +647,7 @@
               "type": "bytes4[]"
             }
           ],
-          "internalType": "struct IDiamondWritableInternal.FacetCut[]",
+          "internalType": "struct IDAIMONDWritableInternal.FacetCut[]",
           "name": "facetCuts",
           "type": "tuple[]"
         },
@@ -662,7 +662,7 @@
           "type": "bytes"
         }
       ],
-      "name": "diamondCut",
+      "name": "DAIMONDCut",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -735,8 +735,8 @@
               "type": "bytes4[]"
             }
           ],
-          "internalType": "struct IDiamondReadable.Facet[]",
-          "name": "diamondFacets",
+          "internalType": "struct IDAIMONDReadable.Facet[]",
+          "name": "DAIMONDFacets",
           "type": "tuple[]"
         }
       ],

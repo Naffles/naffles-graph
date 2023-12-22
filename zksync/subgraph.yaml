@@ -3,11 +3,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: L2NaffleDiamond
+    name: L2NaffleDAIMOND
     network: zksync-era-testnet
     source:
       address: "0x8176e577385319dd4B9c41d1083179602E1Ed23A"
-      abi: L2NaffleDiamond
+      abi: L2NaffleDAIMOND
       startBlock: 14421313
     mapping:
       kind: ethereum/events
@@ -21,8 +21,8 @@ dataSources:
         - PaidTicket
         - OpenEntryTicket
       abis:
-        - name: L2NaffleDiamond
-          file: ./abis/L2NaffleDiamond.json
+        - name: L2NaffleDAIMOND
+          file: ./abis/L2NaffleDAIMOND.json
       eventHandlers:
         - event: L2NaffleCancelled(indexed uint256,bytes32)
           handler: handleL2NaffleCancelled
@@ -38,13 +38,13 @@ dataSources:
           handler: handleTicketsBought
         - event: RandomNumberRequested(indexed uint256)
           handler: handleRandomNumberRequested
-      file: ./src/l-2-naffle-diamond.ts
+      file: ./src/l-2-naffle-DAIMOND.ts
   - kind: ethereum
-    name: L2OpenEntryTicketDiamond
+    name: L2OpenEntryTicketDAIMOND
     network: zksync-era-testnet
     source:
       address: "0x5924E71CD2AF79A324d8FdD025D4054048D35889"
-      abi: L2OpenEntryTicketDiamond
+      abi: L2OpenEntryTicketDAIMOND
       startBlock: 14421219
     mapping:
       kind: ethereum/events
@@ -58,8 +58,8 @@ dataSources:
         - PaidTicket
         - OpenEntryTicket
       abis:
-        - name: L2OpenEntryTicketDiamond
-          file: ./abis/L2OpenEntryTicketDiamond.json
+        - name: L2OpenEntryTicketDAIMOND
+          file: ./abis/L2OpenEntryTicketDAIMOND.json
       eventHandlers:
         - event: TicketsAttachedToNaffle(indexed uint256,uint256[],uint256,indexed address)
           handler: handleTicketsAttachedToNaffle
@@ -69,13 +69,13 @@ dataSources:
           handler: handleTransferOpenEntry
         - event: StakingRewardsClaimed(indexed address,uint256)
           handler: handleStakingRewardsClaimed
-      file: ./src/l-2-naffle-diamond.ts
+      file: ./src/l-2-naffle-DAIMOND.ts
   - kind: ethereum
-    name: L2PaidTicketDiamond
+    name: L2PaidTicketDAIMOND
     network: zksync-era-testnet
     source:
       address: "0x70b78F8Ef774d2f8b2907840767C704915b6C194"
-      abi: L2PaidTicketDiamond
+      abi: L2PaidTicketDAIMOND
       startBlock: 14421129
     mapping:
       kind: ethereum/events
@@ -89,8 +89,8 @@ dataSources:
         - PaidTicket
         - OpenEntryTicket
       abis:
-        - name: L2PaidTicketDiamond
-          file: ./abis/L2PaidTicketDiamond.json
+        - name: L2PaidTicketDAIMOND
+          file: ./abis/L2PaidTicketDAIMOND.json
       eventHandlers:
         - event: PaidTicketsMinted(indexed address,indexed uint256,uint256,uint256,uint256)
           handler: handlePaidTicketsMinted
@@ -100,4 +100,4 @@ dataSources:
           handler: handleTransferSingle
         - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
           handler: handleTransferBatch
-      file: ./src/l-2-naffle-diamond.ts
+      file: ./src/l-2-naffle-DAIMOND.ts

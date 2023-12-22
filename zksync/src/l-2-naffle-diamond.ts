@@ -6,19 +6,19 @@ import {
   OpenEntryTicketsUsed as OpenEntryTicketsUsedEvent,
   RandomNumberRequested as RandomNumberRequestedEvent,
   TicketsBought as TicketsBoughtEvent,
-} from "../generated/L2NaffleDiamond/L2NaffleDiamond";
+} from "../generated/L2NaffleDAIMOND/L2NaffleDAIMOND";
 import {
   PaidTicketsMinted as PaidTicketsMintedEvent,
   PaidTicketsRefundedAndBurned as PaidTicketsRefundedAndBurnedEvent,
   TransferSingle as TransferSingleEvent,
   TransferBatch as TransferBatchEvent,
-} from "../generated/L2PaidTicketDiamond/L2PaidTicketDiamond";
+} from "../generated/L2PaidTicketDAIMOND/L2PaidTicketDAIMOND";
 import {
     StakingRewardsClaimed,
   TicketsAttachedToNaffle as TicketsAttachedToNaffleEvent,
   TicketsDetachedFromNaffle as TicketsDetachedFromNaffleEvent,
   Transfer as TransferEvent,
-} from "../generated/L2OpenEntryTicketDiamond/L2OpenEntryTicketDiamond";
+} from "../generated/L2OpenEntryTicketDAIMOND/L2OpenEntryTicketDAIMOND";
 import {
   L2Naffle,
   L2User,

@@ -1,7 +1,7 @@
 import { newMockEvent } from "matchstick-as";
 import { ethereum, Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
 import {
-  DiamondCut,
+  DAIMONDCut,
   L1NaffleCancelled,
   L1NaffleCreated,
   L1NaffleWinnerSet,
@@ -9,7 +9,7 @@ import {
   RoleAdminChanged,
   RoleGranted,
   RoleRevoked,
-} from "../generated/L1NaffleDiamond/L1NaffleDiamond";
+} from "../generated/L1NaffleDAIMOND/L1NaffleDAIMOND";
 import {
   ChainlinkRequestFulfilled,
   NaffleWinnerRolled,
@@ -65,29 +65,29 @@ export function createNaffleWinnerRolledEvent(
   return naffleWinnerRolledEvent;
 }
 
-export function createDiamondCutEvent(
+export function createDAIMONDCutEvent(
   facetCuts: Array<ethereum.Tuple>,
   target: Address,
   data: Bytes
-): DiamondCut {
-  let diamondCutEvent = changetype<DiamondCut>(newMockEvent());
+): DAIMONDCut {
+  let DAIMONDCutEvent = changetype<DAIMONDCut>(newMockEvent());
 
-  diamondCutEvent.parameters = new Array();
+  DAIMONDCutEvent.parameters = new Array();
 
-  diamondCutEvent.parameters.push(
+  DAIMONDCutEvent.parameters.push(
     new ethereum.EventParam(
       "facetCuts",
       ethereum.Value.fromTupleArray(facetCuts)
     )
   );
-  diamondCutEvent.parameters.push(
+  DAIMONDCutEvent.parameters.push(
     new ethereum.EventParam("target", ethereum.Value.fromAddress(target))
   );
-  diamondCutEvent.parameters.push(
+  DAIMONDCutEvent.parameters.push(
     new ethereum.EventParam("data", ethereum.Value.fromBytes(data))
   );
 
-  return diamondCutEvent;
+  return DAIMONDCutEvent;
 }
 
 export function createL1NaffleCancelledEvent(
