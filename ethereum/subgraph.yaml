@@ -6,9 +6,9 @@ dataSources:
     name: L1NaffleDiamond
     network: goerli
     source:
-      address: "0x56A05Ad34200dD84a9f19243346958F75bd9177B"
+      address: "0xbcFeAb24584D18190fF9C03113495EFcbB0fdD18"
       abi: L1NaffleDiamond
-      startBlock: 9479120
+      startBlock: 10252160
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
