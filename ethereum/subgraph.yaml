@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: L1NaffleDiamond
-    network: goerli
+    network: mainnet
     source:
-      address: "0xE7Cc1c3754912EB2d5a76C255F9FDfcC9D836041"
+      address: "0x5d23dFE21D547cf30eF4DA045003577bD1a74F59"
       abi: L1NaffleDiamond
-      startBlock: 10252160
+      startBlock: 18933136
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
