@@ -233,17 +233,16 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
   }
 
   for (let i = BigInt.fromI32(0); i < event.params.amount; i = i.plus(BigInt.fromI32(1))) {
-
-      let ticketIdOnContract = ticketCount.count.plus(i).plus(BigInt.fromI32(1));
+      let id_ = ticketCount.count.plus(i).plus(BigInt.fromI32(1));
       let ticketId = event.params.startingTicketId.plus(i);
-      let entity = new PaidTicket(Bytes.fromBigInt(ticketIdOnContract));
+      let entity = new PaidTicket(Bytes.fromByteArray(Bytes.fromBigInt(id_)));
       entity.naffle = Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
       entity.owner = userEntity.id;
       entity.timestampLastUpdate = event.block.timestamp;
       entity.blocknumberLastUpdate = event.block.number;
       entity.transactionHash = event.transaction.hash;
       entity.ticketIdOnNaffle = ticketId;
-      entity.ticketIdOnContract = ticketIdOnContract;
+      entity.ticketIdOnContract = id_;
       entity.redeemed = false;
       entity.refunded = false;
       entity.save();
