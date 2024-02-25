@@ -60,11 +60,11 @@ export function handleL2NaffleCreated(event: L2NaffleCreatedEvent): void {
   entity.transactionHash = event.transaction.hash;
   entity.naffleStatus = "ACTIVE";
   entity.type = event.params.naffleType
-  if (event.params.naffleType == 0) {
+  if (event.params.naffleTokenInformation.naffleTokenType == 0) {
     entity.tokenType = "ERC721";
-  } else if (event.params.naffleType == 1) {
+  } else if (event.params.naffleTokenInformation.naffleTokenType == 1) {
     entity.tokenType = "ERC1155";
-  } else if (event.params.naffleType == 2) {
+  } else if (event.params.naffleTokenInformation.naffleTokenType == 2) {
     entity.tokenType = "ERC20";
   }
 
