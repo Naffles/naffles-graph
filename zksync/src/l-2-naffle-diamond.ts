@@ -60,11 +60,11 @@ export function handleL2NaffleCreated(event: L2NaffleCreatedEvent): void {
   entity.transactionHash = event.transaction.hash;
   entity.naffleStatus = "ACTIVE";
   entity.type = event.params.naffleType
-  if (event.params.naffleType == 0) {
+  if (event.params.naffleTokenInformation.naffleTokenType == 0) {
     entity.tokenType = "ERC721";
-  } else if (event.params.naffleType == 1) {
+  } else if (event.params.naffleTokenInformation.naffleTokenType == 1) {
     entity.tokenType = "ERC1155";
-  } else if (event.params.naffleType == 2) {
+  } else if (event.params.naffleTokenInformation.naffleTokenType == 2) {
     entity.tokenType = "ERC20";
   }
 
@@ -233,16 +233,16 @@ export function handlePaidTicketsMinted(event: PaidTicketsMintedEvent): void {
   }
 
   for (let i = BigInt.fromI32(0); i < event.params.amount; i = i.plus(BigInt.fromI32(1))) {
+      let id_ = ticketCount.count.plus(i).plus(BigInt.fromI32(1));
       let ticketId = event.params.startingTicketId.plus(i);
-      let uniqueTicketId = event.params.naffleId.toString() + "-" + event.params.startingTicketId.plus(i).toString();
-      let entity = new PaidTicket(Bytes.fromByteArray(Bytes.fromUTF8(uniqueTicketId)));
+      let entity = new PaidTicket(Bytes.fromByteArray(Bytes.fromBigInt(id_)));
       entity.naffle = Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
       entity.owner = userEntity.id;
       entity.timestampLastUpdate = event.block.timestamp;
       entity.blocknumberLastUpdate = event.block.number;
       entity.transactionHash = event.transaction.hash;
       entity.ticketIdOnNaffle = ticketId;
-      entity.ticketIdOnContract = ticketCount.count.plus(i).plus(BigInt.fromI32(1));
+      entity.ticketIdOnContract = id_;
       entity.redeemed = false;
       entity.refunded = false;
       entity.save();
