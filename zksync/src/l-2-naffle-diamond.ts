@@ -162,6 +162,7 @@ export function handleTicketsAttachedToNaffle(
         Bytes.fromByteArray(Bytes.fromBigInt(event.params.ticketIds[i]))
       );
       entity.naffle = Bytes.fromByteArray(Bytes.fromBigInt(event.params.naffleId))
+      entity.naffleId = event.params.naffleId;
       entity.owner = event.params.owner;
       entity.timestampLastUpdate = event.block.timestamp;
       entity.blocknumberLastUpdate = event.block.number;
@@ -186,6 +187,7 @@ export function handleTicketsDetachedFromNaffle(
             entity.transactionHash = event.transaction.hash;
             entity.ticketIdOnNaffle = null;
             entity.naffle = null;
+            entity.naffleId = null;
             entity.save();
         }
     }
