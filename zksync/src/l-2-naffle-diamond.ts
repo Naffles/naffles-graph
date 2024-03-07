@@ -187,6 +187,7 @@ export function handleTicketsDetachedFromNaffle(
             entity.transactionHash = event.transaction.hash;
             entity.ticketIdOnNaffle = null;
             entity.naffle = null;
+            entity.naffleId = null;
             entity.save();
         }
     }
