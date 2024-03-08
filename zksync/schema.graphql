@@ -13,6 +13,11 @@ enum TicketActivityType {
   BURNED
 }
 
+type TotalUserCount @entity {
+  id: Bytes!
+  count: BigInt!
+}
+
 type L2User @entity {
   id: Bytes!
   address: Bytes!
@@ -22,6 +27,7 @@ type L2User @entity {
   timestampLastUpdate: BigInt
   blocknumberLastUpdate: BigInt
   transactionHash: Bytes
+  userNumber: BigInt
 }
 
 type Collection @entity {
