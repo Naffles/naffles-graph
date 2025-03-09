@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt
+  BigInt,
 } from "@graphprotocol/graph-ts";
 
 export class DiamondCut extends ethereum.Event {
@@ -24,9 +24,7 @@ export class DiamondCut__Params {
   }
 
   get facetCuts(): Array<DiamondCutFacetCutsStruct> {
-    return this._event.parameters[0].value.toTupleArray<
-      DiamondCutFacetCutsStruct
-    >();
+    return this._event.parameters[0].value.toTupleArray<DiamondCutFacetCutsStruct>();
   }
 
   get target(): Address {
@@ -89,7 +87,7 @@ export class L2NaffleCreated__Params {
 
   get naffleTokenInformation(): L2NaffleCreatedNaffleTokenInformationStruct {
     return changetype<L2NaffleCreatedNaffleTokenInformationStruct>(
-      this._event.parameters[0].value.toTuple()
+      this._event.parameters[0].value.toTuple(),
     );
   }
 
@@ -387,7 +385,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
 
   facetAddress(selector: Bytes): Address {
     let result = super.call("facetAddress", "facetAddress(bytes4):(address)", [
-      ethereum.Value.fromFixedBytes(selector)
+      ethereum.Value.fromFixedBytes(selector),
     ]);
 
     return result[0].toAddress();
@@ -397,7 +395,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     let result = super.tryCall(
       "facetAddress",
       "facetAddress(bytes4):(address)",
-      [ethereum.Value.fromFixedBytes(selector)]
+      [ethereum.Value.fromFixedBytes(selector)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -410,7 +408,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     let result = super.call(
       "facetAddresses",
       "facetAddresses():(address[])",
-      []
+      [],
     );
 
     return result[0].toAddressArray();
@@ -420,7 +418,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     let result = super.tryCall(
       "facetAddresses",
       "facetAddresses():(address[])",
-      []
+      [],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -433,19 +431,19 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     let result = super.call(
       "facetFunctionSelectors",
       "facetFunctionSelectors(address):(bytes4[])",
-      [ethereum.Value.fromAddress(facet)]
+      [ethereum.Value.fromAddress(facet)],
     );
 
     return result[0].toBytesArray();
   }
 
   try_facetFunctionSelectors(
-    facet: Address
+    facet: Address,
   ): ethereum.CallResult<Array<Bytes>> {
     let result = super.tryCall(
       "facetFunctionSelectors",
       "facetFunctionSelectors(address):(bytes4[])",
-      [ethereum.Value.fromAddress(facet)]
+      [ethereum.Value.fromAddress(facet)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -457,9 +455,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
   facets(): Array<L2NaffleDiamond__facetsResultDiamondFacetsStruct> {
     let result = super.call("facets", "facets():((address,bytes4[])[])", []);
 
-    return result[0].toTupleArray<
-      L2NaffleDiamond__facetsResultDiamondFacetsStruct
-    >();
+    return result[0].toTupleArray<L2NaffleDiamond__facetsResultDiamondFacetsStruct>();
   }
 
   try_facets(): ethereum.CallResult<
@@ -471,7 +467,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      value[0].toTupleArray<L2NaffleDiamond__facetsResultDiamondFacetsStruct>()
+      value[0].toTupleArray<L2NaffleDiamond__facetsResultDiamondFacetsStruct>(),
     );
   }
 
@@ -479,7 +475,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     let result = super.call(
       "getFallbackAddress",
       "getFallbackAddress():(address)",
-      []
+      [],
     );
 
     return result[0].toAddress();
@@ -489,7 +485,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     let result = super.tryCall(
       "getFallbackAddress",
       "getFallbackAddress():(address)",
-      []
+      [],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -500,7 +496,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
 
   getRoleAdmin(role: Bytes): Bytes {
     let result = super.call("getRoleAdmin", "getRoleAdmin(bytes32):(bytes32)", [
-      ethereum.Value.fromFixedBytes(role)
+      ethereum.Value.fromFixedBytes(role),
     ]);
 
     return result[0].toBytes();
@@ -510,7 +506,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     let result = super.tryCall(
       "getRoleAdmin",
       "getRoleAdmin(bytes32):(bytes32)",
-      [ethereum.Value.fromFixedBytes(role)]
+      [ethereum.Value.fromFixedBytes(role)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -522,7 +518,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
   hasRole(role: Bytes, account: Address): boolean {
     let result = super.call("hasRole", "hasRole(bytes32,address):(bool)", [
       ethereum.Value.fromFixedBytes(role),
-      ethereum.Value.fromAddress(account)
+      ethereum.Value.fromAddress(account),
     ]);
 
     return result[0].toBoolean();
@@ -531,7 +527,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
   try_hasRole(role: Bytes, account: Address): ethereum.CallResult<boolean> {
     let result = super.tryCall("hasRole", "hasRole(bytes32,address):(bool)", [
       ethereum.Value.fromFixedBytes(role),
-      ethereum.Value.fromAddress(account)
+      ethereum.Value.fromAddress(account),
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -574,7 +570,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     let result = super.call(
       "supportsInterface",
       "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)]
+      [ethereum.Value.fromFixedBytes(interfaceId)],
     );
 
     return result[0].toBoolean();
@@ -584,7 +580,7 @@ export class L2NaffleDiamond extends ethereum.SmartContract {
     let result = super.tryCall(
       "supportsInterface",
       "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)]
+      [ethereum.Value.fromFixedBytes(interfaceId)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -718,9 +714,7 @@ export class DiamondCutCall__Inputs {
   }
 
   get facetCuts(): Array<DiamondCutCallFacetCutsStruct> {
-    return this._call.inputValues[0].value.toTupleArray<
-      DiamondCutCallFacetCutsStruct
-    >();
+    return this._call.inputValues[0].value.toTupleArray<DiamondCutCallFacetCutsStruct>();
   }
 
   get target(): Address {

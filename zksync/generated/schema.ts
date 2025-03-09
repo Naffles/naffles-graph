@@ -8,8 +8,65 @@ import {
   store,
   Bytes,
   BigInt,
-  BigDecimal
+  BigDecimal,
 } from "@graphprotocol/graph-ts";
+
+export class TotalUserCount extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save TotalUserCount entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type TotalUserCount must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("TotalUserCount", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): TotalUserCount | null {
+    return changetype<TotalUserCount | null>(
+      store.get_in_block("TotalUserCount", id.toHexString()),
+    );
+  }
+
+  static load(id: Bytes): TotalUserCount | null {
+    return changetype<TotalUserCount | null>(
+      store.get("TotalUserCount", id.toHexString()),
+    );
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get count(): BigInt {
+    let value = this.get("count");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set count(value: BigInt) {
+    this.set("count", Value.fromBigInt(value));
+  }
+}
 
 export class L2User extends Entity {
   constructor(id: Bytes) {
@@ -23,7 +80,7 @@ export class L2User extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type L2User must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type L2User must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
       store.set("L2User", id.toBytes().toHexString(), this);
     }
@@ -31,7 +88,7 @@ export class L2User extends Entity {
 
   static loadInBlock(id: Bytes): L2User | null {
     return changetype<L2User | null>(
-      store.get_in_block("L2User", id.toHexString())
+      store.get_in_block("L2User", id.toHexString()),
     );
   }
 
@@ -68,20 +125,16 @@ export class L2User extends Entity {
   get naffles(): L2NaffleLoader {
     return new L2NaffleLoader(
       "L2User",
-      this.get("id")!
-        .toBytes()
-        .toHexString(),
-      "naffles"
+      this.get("id")!.toBytes().toHexString(),
+      "naffles",
     );
   }
 
   get paidTickets(): PaidTicketLoader {
     return new PaidTicketLoader(
       "L2User",
-      this.get("id")!
-        .toBytes()
-        .toHexString(),
-      "paidTickets"
+      this.get("id")!.toBytes().toHexString(),
+      "paidTickets",
     );
   }
 
@@ -148,6 +201,23 @@ export class L2User extends Entity {
       this.set("transactionHash", Value.fromBytes(<Bytes>value));
     }
   }
+
+  get userNumber(): BigInt | null {
+    let value = this.get("userNumber");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set userNumber(value: BigInt | null) {
+    if (!value) {
+      this.unset("userNumber");
+    } else {
+      this.set("userNumber", Value.fromBigInt(<BigInt>value));
+    }
+  }
 }
 
 export class Collection extends Entity {
@@ -162,7 +232,7 @@ export class Collection extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type Collection must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type Collection must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
       store.set("Collection", id.toBytes().toHexString(), this);
     }
@@ -170,13 +240,13 @@ export class Collection extends Entity {
 
   static loadInBlock(id: Bytes): Collection | null {
     return changetype<Collection | null>(
-      store.get_in_block("Collection", id.toHexString())
+      store.get_in_block("Collection", id.toHexString()),
     );
   }
 
   static load(id: Bytes): Collection | null {
     return changetype<Collection | null>(
-      store.get("Collection", id.toHexString())
+      store.get("Collection", id.toHexString()),
     );
   }
 
@@ -209,10 +279,8 @@ export class Collection extends Entity {
   get naffles(): L2NaffleLoader {
     return new L2NaffleLoader(
       "Collection",
-      this.get("id")!
-        .toBytes()
-        .toHexString(),
-      "naffles"
+      this.get("id")!.toBytes().toHexString(),
+      "naffles",
     );
   }
 
@@ -280,7 +348,7 @@ export class TotalTicketCount extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type TotalTicketCount must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type TotalTicketCount must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
       store.set("TotalTicketCount", id.toBytes().toHexString(), this);
     }
@@ -288,13 +356,13 @@ export class TotalTicketCount extends Entity {
 
   static loadInBlock(id: Bytes): TotalTicketCount | null {
     return changetype<TotalTicketCount | null>(
-      store.get_in_block("TotalTicketCount", id.toHexString())
+      store.get_in_block("TotalTicketCount", id.toHexString()),
     );
   }
 
   static load(id: Bytes): TotalTicketCount | null {
     return changetype<TotalTicketCount | null>(
-      store.get("TotalTicketCount", id.toHexString())
+      store.get("TotalTicketCount", id.toHexString()),
     );
   }
 
@@ -337,7 +405,7 @@ export class L2Naffle extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type L2Naffle must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type L2Naffle must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
       store.set("L2Naffle", id.toBytes().toHexString(), this);
     }
@@ -345,7 +413,7 @@ export class L2Naffle extends Entity {
 
   static loadInBlock(id: Bytes): L2Naffle | null {
     return changetype<L2Naffle | null>(
-      store.get_in_block("L2Naffle", id.toHexString())
+      store.get_in_block("L2Naffle", id.toHexString()),
     );
   }
 
@@ -741,7 +809,7 @@ export class TicketActivity extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type TicketActivity must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type TicketActivity must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
       store.set("TicketActivity", id.toBytes().toHexString(), this);
     }
@@ -749,13 +817,13 @@ export class TicketActivity extends Entity {
 
   static loadInBlock(id: Bytes): TicketActivity | null {
     return changetype<TicketActivity | null>(
-      store.get_in_block("TicketActivity", id.toHexString())
+      store.get_in_block("TicketActivity", id.toHexString()),
     );
   }
 
   static load(id: Bytes): TicketActivity | null {
     return changetype<TicketActivity | null>(
-      store.get("TicketActivity", id.toHexString())
+      store.get("TicketActivity", id.toHexString()),
     );
   }
 
@@ -896,7 +964,7 @@ export class PaidTicket extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type PaidTicket must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type PaidTicket must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
       store.set("PaidTicket", id.toBytes().toHexString(), this);
     }
@@ -904,13 +972,13 @@ export class PaidTicket extends Entity {
 
   static loadInBlock(id: Bytes): PaidTicket | null {
     return changetype<PaidTicket | null>(
-      store.get_in_block("PaidTicket", id.toHexString())
+      store.get_in_block("PaidTicket", id.toHexString()),
     );
   }
 
   static load(id: Bytes): PaidTicket | null {
     return changetype<PaidTicket | null>(
-      store.get("PaidTicket", id.toHexString())
+      store.get("PaidTicket", id.toHexString()),
     );
   }
 
@@ -998,10 +1066,8 @@ export class PaidTicket extends Entity {
   get activities(): TicketActivityLoader {
     return new TicketActivityLoader(
       "PaidTicket",
-      this.get("id")!
-        .toBytes()
-        .toHexString(),
-      "activities"
+      this.get("id")!.toBytes().toHexString(),
+      "activities",
     );
   }
 
@@ -1095,7 +1161,7 @@ export class OpenEntryTicket extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type OpenEntryTicket must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type OpenEntryTicket must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
       store.set("OpenEntryTicket", id.toBytes().toHexString(), this);
     }
@@ -1103,13 +1169,13 @@ export class OpenEntryTicket extends Entity {
 
   static loadInBlock(id: Bytes): OpenEntryTicket | null {
     return changetype<OpenEntryTicket | null>(
-      store.get_in_block("OpenEntryTicket", id.toHexString())
+      store.get_in_block("OpenEntryTicket", id.toHexString()),
     );
   }
 
   static load(id: Bytes): OpenEntryTicket | null {
     return changetype<OpenEntryTicket | null>(
-      store.get("OpenEntryTicket", id.toHexString())
+      store.get("OpenEntryTicket", id.toHexString()),
     );
   }
 
@@ -1197,10 +1263,8 @@ export class OpenEntryTicket extends Entity {
   get activities(): TicketActivityLoader {
     return new TicketActivityLoader(
       "OpenEntryTicket",
-      this.get("id")!
-        .toBytes()
-        .toHexString(),
-      "activities"
+      this.get("id")!.toBytes().toHexString(),
+      "activities",
     );
   }
 
